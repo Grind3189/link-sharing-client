@@ -51,7 +51,7 @@ function Home() {
           >
             + Add new link
           </button>
-          {linksData.length ? <LinksList linksData={linksData} removeLink={removeLink} /> : <EmptyPlaceholder /> }
+          {linksData.length ? <LinksList initialData={linksData} removeLink={removeLink} /> : <EmptyPlaceholder /> }
         </div>
       </section>
       <div
