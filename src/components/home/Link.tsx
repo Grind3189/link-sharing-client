@@ -11,7 +11,7 @@ interface LinkProp {
 
 const Link = ({ linkInfo, index, removeLink }: LinkProp) => {
   return (
-    <section className="bg-grey-100 p-5 rounded-xl mb-6 last-of-type:mb-[94px]">
+    <>
       <div className="mb-3 flex items-center justify-between text-grey-200">
         <div className="flex items-center gap-2">
           <img src={iconDnD} alt="drag and drop icon" />
@@ -41,7 +41,7 @@ const Link = ({ linkInfo, index, removeLink }: LinkProp) => {
           />
         </div>
       </div>
-    </section>
+    </>
   );
 };
 
