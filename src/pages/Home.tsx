@@ -26,6 +26,10 @@ function Home() {
     setLinksData(filteredData)
   }
 
+  const updateLinks = (data: LinkType[]) => {
+    setLinksData(data)
+  }
+
   return (
     <main className="relative h-full justify-between lg:flex lg:gap-6">
       <section className="grid w-2/5 place-items-center rounded-xl bg-white max-lg:hidden">
@@ -51,7 +55,7 @@ function Home() {
           >
             + Add new link
           </button>
-          {linksData.length ? <LinksList initialData={linksData} removeLink={removeLink} /> : <EmptyPlaceholder /> }
+          {linksData.length ? <LinksList updateLinks={updateLinks} initialData={linksData} removeLink={removeLink} /> : <EmptyPlaceholder /> }
         </div>
       </section>
       <div
