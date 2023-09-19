@@ -1,7 +1,6 @@
 import { LinkType } from "../../types/LinkType";
 import Link from "./Link";
 
-
 interface LinksListProp {
   linksData: LinkType[];
   removeLink: (id: string) => void
