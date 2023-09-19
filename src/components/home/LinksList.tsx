@@ -1,19 +1,21 @@
+import { useState } from "react";
 import { LinkType } from "../../types/LinkType";
 import Link from "./Link";
 
-
 interface LinksListProp {
-  linksData: LinkType[];
-  removeLink: (id: string) => void
+  initialData: LinkType[];
+  removeLink: (id: string) => void;
 }
 
-const LinksList = ({ linksData, removeLink }: LinksListProp) => {
+const LinksList = ({ initialData, removeLink }: LinksListProp) => {
+  const [linksData, setLinksData] = useState<LinkType[]>(initialData);
+
   return (
-    <div>
-      {linksData.map((linkInfo, index) => (
-        <Link linkInfo={linkInfo} index={index} removeLink={removeLink} />
-      ))}
-    </div>
+      <div>
+        {linksData.map((linkInfo, index) => (
+          <Link linkInfo={linkInfo} index={index} removeLink={removeLink} />
+        ))}
+      </div>
   );
 };
 
