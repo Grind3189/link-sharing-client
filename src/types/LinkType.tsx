@@ -1,18 +1,18 @@
-type Platform = 
-    "github" |
-    "frontendMentor" |
-    "twitter" |
-    "linkedIn" |
-    "youtube" |
-    "facebook" |
-    "twitch" |
-    "devTo" |
-    "codeWars" |
-    "codePen" |
+export type Platform = 
+    "GitHub" |
+    "Frontend Mentor" |
+    "Twitter" |
+    "LinkedIn" |
+    "Youtube" |
+    "Facebook" |
+    "Twitch" |
+    "Dev.to" |
+    "Codewars" |
+    "Codepen" |
     "freeCodeCamp" |
-    "gitLab" |
-    "hashNode" |
-    "stackOverflow" 
+    "GitLab" |
+    "Hashnode" |
+    "Stack Overflow" 
 
 
 export type LinkType = {

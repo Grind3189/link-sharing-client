@@ -1,15 +1,18 @@
 import { LinkType } from "../../types/LinkType";
+import { LinkContext } from "../../context/LinkContextProvider";
+import {useContext} from 'react'
 import iconDnD from "../../assets/icon-drag-and-drop.svg";
 import linkIc from "../../assets/icon-link-copied-to-clipboard.svg";
-import MenuList from "./MenuList";
+import Menu from "./Menu";
 
 interface LinkProp {
   linkInfo: LinkType;
   index: number;
-  removeLink: (id: string) => void
 }
 
-const Link = ({ linkInfo, index, removeLink }: LinkProp) => {
+const Link = ({ linkInfo, index }: LinkProp) => {
+  const {handleRemoveLink} = useContext(LinkContext)
+
   return (
     <>
       <div className="mb-3 flex items-center justify-between text-grey-200">
@@ -17,7 +20,7 @@ const Link = ({ linkInfo, index, removeLink }: LinkProp) => {
           <img src={iconDnD} alt="drag and drop icon" />
           <span className="font-bold">Link #{index + 1}</span>
         </div>
-        <button className="text-body_m" onClick={() => removeLink(linkInfo.id)}>Remove</button>
+        <button className="text-body_m" onClick={() => handleRemoveLink(linkInfo.id)}>Remove</button>
       </div>
 
       <div className="flex flex-col text-grey-300">
@@ -25,7 +28,7 @@ const Link = ({ linkInfo, index, removeLink }: LinkProp) => {
           Platform
         </label>
 
-        <MenuList />
+        <Menu linkInfo={linkInfo} />
 
         <label htmlFor="link" className="mt-3 text-body_s">
           Link
@@ -34,7 +37,7 @@ const Link = ({ linkInfo, index, removeLink }: LinkProp) => {
           <img src={linkIc} alt="link icon" />
           <input
             type="text"
-            placeholder="e.g. https://www.github.com/johnappleseed"
+            placeholder="e.g. https://github.com/Grind3189"
             name="link"
             id="link"
             className="w-full outline-none"

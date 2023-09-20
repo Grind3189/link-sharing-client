@@ -1,34 +1,11 @@
 import EmptyPlaceholder from "../components/home/EmptyPlaceholder";
 import phoneMockup from "../assets/illustration-phone-mockup.svg";
 import LinksList from "../components/home/LinksList";
-import { useState } from "react";
-import { LinkType } from "../types/LinkType";
-import { nanoid } from "nanoid";
+import { useContext } from "react";
+import { LinkContext } from "../context/LinkContextProvider";
 
 function Home() {
-  const [linksData, setLinksData] = useState<LinkType[]>([]);
-
-  const handleAddLink = () => {
-    setLinksData(prev => {
-      return [
-        ...prev,
-        {
-          platform: "github",
-          id: nanoid(),
-          link: ""
-        }
-      ]
-    })
-  }
-
-  const removeLink = (id: string) => {
-    const filteredData = linksData.filter(links => links.id !== id)
-    setLinksData(filteredData)
-  }
-
-  const updateLinks = (data: LinkType[]) => {
-    setLinksData(data)
-  }
+  const { handleAddLink, linksData } = useContext(LinkContext);
 
   return (
     <main className="relative h-full justify-between lg:flex lg:gap-6">
@@ -55,7 +32,11 @@ function Home() {
           >
             + Add new link
           </button>
-          {linksData.length ? <LinksList updateLinks={updateLinks} initialData={linksData} removeLink={removeLink} /> : <EmptyPlaceholder /> }
+          {linksData.length ? (
+            <LinksList/>
+          ) : (
+            <EmptyPlaceholder />
+          )}
         </div>
       </section>
       <div

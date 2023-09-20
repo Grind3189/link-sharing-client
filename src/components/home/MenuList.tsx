@@ -12,52 +12,314 @@ import FreeCodeCamp from "./getIcons/FreeCodeCamp";
 import Gitlab from "./getIcons/Gitlab";
 import Hashnode from "./getIcons/Hashnode";
 import StackOverFlow from "./getIcons/StackOverFlow";
-import arrowDownIc from "../../assets/icon-arrow-down.svg";
-import { useState } from "react";
+import { LinkType } from "../../types/LinkType";
+import { LinkContext } from "../../context/LinkContextProvider";
+import { useContext } from "react";
 
-const MenuList = () => {
-  const [toggleMenu, setToggleMenu] = useState<boolean>(false);
+interface MenuListProp {
+  linkInfo: LinkType;
+}
 
-  const handleToggle = () => {
-    setToggleMenu((prev) => !prev);
-  };
+const MenuList = ({ linkInfo }: MenuListProp) => {
+  const { handleChangePlatform } = useContext(LinkContext);
+
   return (
-    <section className="relative">
+    <>
       <div
-        className="group flex cursor-pointer items-center gap-3 rounded-lg border border-borders bg-white px-4 py-3"
-        onClick={handleToggle}
-      >
-        <Github />
-        <span className="mr-auto w-full">Github</span>
-        <img
-          src={arrowDownIc}
-          alt="arrow icon"
-          className={`${toggleMenu ? "rotate-[-180deg]" : ""} transition-all`}
-        />
-      </div>
-
-      <div
-        className={`shadow-grey absolute left-0 right-0
-         top-[60px] max-h-[200px] overflow-y-auto
-          rounded-lg border border-borders bg-white px-4 py-3
-          transition-all ${
-            toggleMenu
-              ? "visible translate-y-0 opacity-100"
-              : "invisible translate-y-[-50%] opacity-0"
-          }`}
-      >
-        
-        <div
-          className={`flex cursor-pointer items-center gap-3
-       border-b border-borders py-3
+        className={`border-b border-borders py-3
         first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-GitHub`}
+          className="flex cursor-pointer items-center gap-3"
         >
           <Github />
           <span>GitHub</span>
-        </div>
-
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="GitHub"
+            id={`${linkInfo.id}-GitHub`}
+            checked={linkInfo.platform === "GitHub"}
+            onChange={handleChangePlatform}
+          />
+        </label>
       </div>
-    </section>
+      <div
+        className={`border-b border-borders py-3
+        first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-Frontend Mentor`}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <FrontendMentor />
+          <span>Frontend Mentor</span>
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="Frontend Mentor"
+            id={`${linkInfo.id}-Frontend Mentor`}
+            checked={linkInfo.platform === "Frontend Mentor"}
+            onChange={handleChangePlatform}
+          />
+        </label>
+      </div>
+      <div
+        className={`border-b border-borders py-3
+        first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-Twitter`}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <Twitter />
+          <span>Twitter</span>
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="Twitter"
+            id={`${linkInfo.id}-Twitter`}
+            checked={linkInfo.platform === "Twitter"}
+            onChange={handleChangePlatform}
+          />
+        </label>
+      </div>
+      <div
+        className={`border-b border-borders py-3
+        first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-LinkedIn`}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <Linkedin />
+          <span>LinkedIn</span>
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="LinkedIn"
+            id={`${linkInfo.id}-LinkedIn`}
+            checked={linkInfo.platform === "LinkedIn"}
+            onChange={handleChangePlatform}
+          />
+        </label>
+      </div>
+      <div
+        className={`border-b border-borders py-3
+        first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-Youtube`}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <Youtube />
+          <span>Youtube</span>
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="Youtube"
+            id={`${linkInfo.id}-Youtube`}
+            checked={linkInfo.platform === "Youtube"}
+            onChange={handleChangePlatform}
+          />
+        </label>
+      </div>
+      <div
+        className={`border-b border-borders py-3
+        first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-Facebook`}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <Facebook />
+          <span>Facebook</span>
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="Facebook"
+            id={`${linkInfo.id}-Facebook`}
+            checked={linkInfo.platform === "Facebook"}
+            onChange={handleChangePlatform}
+          />
+        </label>
+      </div>
+      <div
+        className={`border-b border-borders py-3
+        first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-Twitch`}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <Twitch />
+          <span>Twitch</span>
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="Twitch"
+            id={`${linkInfo.id}-Twitch`}
+            checked={linkInfo.platform === "Twitch"}
+            onChange={handleChangePlatform}
+          />
+        </label>
+      </div>
+      <div
+        className={`border-b border-borders py-3
+        first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-Dev.to`}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <DevTo />
+          <span>Dev.to</span>
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="Dev.to"
+            id={`${linkInfo.id}-Dev.to`}
+            checked={linkInfo.platform === "Dev.to"}
+            onChange={handleChangePlatform}
+          />
+        </label>
+      </div>
+      <div
+        className={`border-b border-borders py-3
+        first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-Codewars`}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <Codewars />
+          <span>Codewars</span>
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="Codewars"
+            id={`${linkInfo.id}-Codewars`}
+            checked={linkInfo.platform === "Codewars"}
+            onChange={handleChangePlatform}
+          />
+        </label>
+      </div>
+      <div
+        className={`border-b border-borders py-3
+        first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-Codepen`}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <Codepen />
+          <span>Codepen</span>
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="Codepen"
+            id={`${linkInfo.id}-Codepen`}
+            checked={linkInfo.platform === "Codepen"}
+            onChange={handleChangePlatform}
+          />
+        </label>
+      </div>
+      <div
+        className={`border-b border-borders py-3
+        first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-freeCodeCamp`}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <FreeCodeCamp />
+          <span>freeCodeCamp</span>
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="freeCodeCamp"
+            id={`${linkInfo.id}-freeCodeCamp`}
+            checked={linkInfo.platform === "freeCodeCamp"}
+            onChange={handleChangePlatform}
+          />
+        </label>
+      </div>
+      <div
+        className={`border-b border-borders py-3
+        first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-GitLab`}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <Gitlab />
+          <span>GitLab</span>
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="GitLab"
+            id={`${linkInfo.id}-GitLab`}
+            checked={linkInfo.platform === "GitLab"}
+            onChange={handleChangePlatform}
+          />
+        </label>
+      </div>
+      <div
+        className={`border-b border-borders py-3
+        first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-Hashnode`}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <Hashnode />
+          <span>Hashnode</span>
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="Hashnode"
+            id={`${linkInfo.id}-Hashnode`}
+            checked={linkInfo.platform === "Hashnode"}
+            onChange={handleChangePlatform}
+          />
+        </label>
+      </div>
+      <div
+        className={`border-b border-borders py-3
+        first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+      >
+        <label
+          htmlFor={`${linkInfo.id}-Stack Overflow`}
+          className="flex cursor-pointer items-center gap-3"
+        >
+          <StackOverFlow />
+          <span>Stack Overflow</span>
+          <input
+            className="invisible"
+            type="radio"
+            name={linkInfo.id}
+            value="Stack Overflow"
+            id={`${linkInfo.id}-Stack Overflow`}
+            checked={linkInfo.platform === "Stack Overflow"}
+            onChange={handleChangePlatform}
+          />
+        </label>
+      </div>
+    </>
   );
 };
 
