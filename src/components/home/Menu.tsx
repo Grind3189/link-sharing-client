@@ -2,7 +2,6 @@ import arrowDownIc from "../../assets/icon-arrow-down.svg";
 import MenuList from "./MenuList";
 import { LinkType } from "../../types/LinkType";
 import { useState } from "react";
-import { getIcon } from "../../util";
 interface MenuProp {
   linkInfo: LinkType;
 }
