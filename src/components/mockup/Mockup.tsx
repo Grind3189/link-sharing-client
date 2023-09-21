@@ -1,16 +1,20 @@
-import phoneMockup from "../../assets/illustration-phone-mockup.svg";
 import { LinkContext } from "../../context/LinkContextProvider";
-import {useContext} from 'react'
-import { getIcon } from "../../util";
+import { useContext } from "react";
+import MockupList from "./MockupList";
 
 const Mockup = () => {
-    const {linksData} = useContext(LinkContext)
-    console.log(linksData)
+  const { linksData } = useContext(LinkContext);
+  console.log(linksData);
   return (
     <section className="grid w-2/5 place-items-center rounded-xl bg-white max-lg:hidden">
-      <div className="border">
-        <img src={phoneMockup} />
-        {linksData.map(link => getIcon(link.platform, false, true))}
+      <div className="flex h-[631px] w-[307px] flex-col items-center overflow-hidden border bg-phone-mockup bg-cover">
+        {linksData.map((linkInfo, index) => {
+          if (index < 5) {
+            return (
+             <MockupList linkInfo={linkInfo} />
+            );
+          } return null
+        })}
       </div>
     </section>
   );

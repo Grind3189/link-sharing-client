@@ -35,6 +35,9 @@ export default {
       boxShadow: {
         'purple': '0px 0px 32px 0px rgba(99, 60, 255, 0.25)',
         'grey': '0px 0px 32px 0px rgba(0, 0, 0, 0.10)'
+      },
+      backgroundImage: {
+        'phone-mockup': "url('./assets/illustration-phone-mockup.svg')"
       }
     },
   },
