@@ -2,6 +2,7 @@ import arrowDownIc from "../../assets/icon-arrow-down.svg";
 import MenuList from "./MenuList";
 import { LinkType } from "../../types/LinkType";
 import { useState } from "react";
+import { getIcon } from "../../util";
 interface MenuProp {
   linkInfo: LinkType;
 }
@@ -22,7 +23,7 @@ const Menu = ({ linkInfo }: MenuProp) => {
           bg-white px-4 py-3 ${toggleMenu ? 'border-purple-300 shadow-purple' : 'border-borders'}`}
         onClick={handleToggle}
       >
-        
+        {getIcon(linkInfo.platform, false)}
         <span className="mr-auto w-full">{linkInfo.platform}</span>
         <img
           src={arrowDownIc}
