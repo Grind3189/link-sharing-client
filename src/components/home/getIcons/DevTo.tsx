@@ -1,6 +1,6 @@
 import { IconType } from "../../../types/IconType";
 
-const DevTo = ({isSelected}: IconType) => {
+const DevTo = ({isSelected, isMockup}: IconType) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,7 +11,7 @@ const DevTo = ({isSelected}: IconType) => {
     >
       <g>
         <path
-          fill={isSelected ? "#633CFF" : "#737373"}
+          fill={isSelected ? "#633CFF" : isMockup ? "#FFFFFF" : "#737373"}
           d="M12.25 0h-8.5A3.75 3.75 0 0 0 0 3.75v8.5A3.75 3.75 0 0 0 3.75 16h8.5A3.75 3.75 0 0 0 16 12.25v-8.5A3.75 3.75 0 0 0 12.25 0Z"
         />
         <path

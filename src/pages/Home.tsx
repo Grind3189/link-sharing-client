@@ -1,17 +1,15 @@
 import EmptyPlaceholder from "../components/home/EmptyPlaceholder";
-import phoneMockup from "../assets/illustration-phone-mockup.svg";
 import LinksList from "../components/home/LinksList";
 import { useContext } from "react";
 import { LinkContext } from "../context/LinkContextProvider";
+import Mockup from "../components/mockup/Mockup";
 
 function Home() {
   const { handleAddLink, linksData } = useContext(LinkContext);
 
   return (
     <main className="relative h-full justify-between lg:flex lg:gap-6">
-      <section className="grid w-2/5 place-items-center rounded-xl bg-white max-lg:hidden">
-        <img src={phoneMockup} />
-      </section>
+      <Mockup />
 
       <section
         className={`flex h-[100%] flex-col
@@ -32,11 +30,7 @@ function Home() {
           >
             + Add new link
           </button>
-          {linksData.length ? (
-            <LinksList/>
-          ) : (
-            <EmptyPlaceholder />
-          )}
+          {linksData.length ? <LinksList /> : <EmptyPlaceholder />}
         </div>
       </section>
       <div

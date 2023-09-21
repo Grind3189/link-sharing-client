@@ -14,19 +14,19 @@ import Hashnode from "../src/components/home/getIcons/Hashnode";
 import StackOverFlow from "../src/components/home/getIcons/StackOverFlow";
 import { Platform as PlatformType } from "./types/LinkType";
 
-export const getIcon = (value: PlatformType, isSelected: boolean) => {
-    if(value === 'Frontend Mentor') return <FrontendMentor isSelected={isSelected} />
-    if(value === 'Twitter') return <Twitter isSelected={isSelected} />
-    if(value === 'LinkedIn') return <Linkedin isSelected={isSelected} />
-    if(value === 'Youtube') return <Youtube isSelected={isSelected} />
-    if(value === 'Facebook') return <Facebook isSelected={isSelected} />
-    if(value === 'Twitch') return <Twitch isSelected={isSelected} />
-    if(value === 'Dev.to') return <DevTo isSelected={isSelected} />
-    if(value === 'Codewars') return <Codewars isSelected={isSelected} />
-    if(value === 'Codepen') return <Codepen isSelected={isSelected} />
-    if(value === 'freeCodeCamp') return <FreeCodeCamp isSelected={isSelected} />
-    if(value === 'GitLab') return <Gitlab isSelected={isSelected} />
-    if(value === 'Hashnode') return <Hashnode isSelected={isSelected} />
-    if(value === 'Stack Overflow') return <StackOverFlow isSelected={isSelected} />
-    return <Github isSelected={isSelected} />
+export const getIcon = (value: PlatformType, isSelected: boolean, isMockup: boolean) => {
+    if(value === 'Frontend Mentor') return <FrontendMentor isSelected={isSelected} isMockup={isMockup} />
+    if(value === 'Twitter') return <Twitter isSelected={isSelected} isMockup={isMockup} />
+    if(value === 'LinkedIn') return <Linkedin isSelected={isSelected} isMockup={isMockup} />
+    if(value === 'Youtube') return <Youtube isSelected={isSelected} isMockup={isMockup} />
+    if(value === 'Facebook') return <Facebook isSelected={isSelected} isMockup={isMockup} />
+    if(value === 'Twitch') return <Twitch isSelected={isSelected} isMockup={isMockup} />
+    if(value === 'Dev.to') return <DevTo isSelected={isSelected} isMockup={isMockup} />
+    if(value === 'Codewars') return <Codewars isSelected={isSelected} isMockup={isMockup} />
+    if(value === 'Codepen') return <Codepen isSelected={isSelected} isMockup={isMockup} />
+    if(value === 'freeCodeCamp') return <FreeCodeCamp isSelected={isSelected} isMockup={isMockup} />
+    if(value === 'GitLab') return <Gitlab isSelected={isSelected} isMockup={isMockup} />
+    if(value === 'Hashnode') return <Hashnode isSelected={isSelected} isMockup={isMockup} />
+    if(value === 'Stack Overflow') return <StackOverFlow isSelected={isSelected} isMockup={isMockup} />
+    return <Github isSelected={isSelected} isMockup={isMockup} />
 }
