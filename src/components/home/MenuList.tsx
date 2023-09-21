@@ -39,8 +39,18 @@ const MenuList = ({ linkInfo }: MenuListProp) => {
               htmlFor={`${linkInfo.id}-${platform}`}
               className="flex cursor-pointer items-center gap-3"
             >
-              {getIcon(platform, linkInfo.platform === platform ? true : false, false)}
-              <span className={linkInfo.platform === platform ? 'text-purple-300': ''}>{platform}</span>
+              {getIcon(
+                platform,
+                linkInfo.platform === platform ? true : false,
+                false,
+              )}
+              <span
+                className={
+                  linkInfo.platform === platform ? "text-purple-300" : ""
+                }
+              >
+                {platform}
+              </span>
               <input
                 className="invisible"
                 type="radio"

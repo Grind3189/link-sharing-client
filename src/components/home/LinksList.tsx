@@ -30,14 +30,14 @@ const LinksList = () => {
               >
                 {(provided) => (
                   <div
-                    className="mb-6 rounded-xl bg-grey-100 p-5 last-of-type:mb-[94px]"
+                    className="mb-6 rounded-xl bg-grey-100 p-5 last-of-type:mb-[94px] select-none"
                     {...provided.draggableProps}
-                    {...provided.dragHandleProps}
                     ref={provided.innerRef}
                   >
                     <Link
                       linkInfo={linkInfo}
                       index={index}
+                      provided={provided}
                     />
                   </div>
                 )}

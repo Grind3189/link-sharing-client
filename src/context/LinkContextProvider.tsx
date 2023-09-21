@@ -59,7 +59,6 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
     setLinksData(updatedData)
   }
 
-  console.log(linksData)
   return (
     <LinkContext.Provider
       value={{

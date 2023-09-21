@@ -4,7 +4,6 @@ import MockupList from "./MockupList";
 
 const Mockup = () => {
   const { linksData } = useContext(LinkContext);
-  console.log(linksData);
   return (
     <section className="grid w-2/5 place-items-center rounded-xl bg-white max-lg:hidden">
       <div className="flex h-[631px] w-[307px] flex-col items-center overflow-hidden border bg-phone-mockup bg-cover">

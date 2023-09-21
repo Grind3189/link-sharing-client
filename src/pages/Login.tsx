@@ -1,7 +1,7 @@
 import logoLg from "../assets/logo-devlinks-large.svg"
 import emailIc from "../assets/icon-email.svg"
 import passwordIc from "../assets/icon-password.svg"
-import InputContainer from "../components/form/inputContainer"
+import InputContainer from "../components/form/InputContainer"
 import { Link } from "react-router-dom"
 
 function Login() {

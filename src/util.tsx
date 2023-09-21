@@ -1,17 +1,17 @@
-import Github from "../src/components/home/getIcons/Github";
-import FrontendMentor from "../src/components/home/getIcons/FrontendMentor";
-import Twitter from "../src/components/home/getIcons/Twitter";
-import Linkedin from "../src/components/home/getIcons/Linkedin";
-import Youtube from "../src/components/home/getIcons/Youtube";
-import Facebook from "../src/components/home/getIcons/Facebook";
-import Twitch from "../src/components/home/getIcons/Twitch";
-import DevTo from "../src/components/home/getIcons/DevTo";
-import Codewars from "../src/components/home/getIcons/Codewars";
-import Codepen from "../src/components/home/getIcons/Codepen";
-import FreeCodeCamp from "../src/components/home/getIcons/FreeCodeCamp";
-import Gitlab from "../src/components/home/getIcons/Gitlab";
-import Hashnode from "../src/components/home/getIcons/Hashnode";
-import StackOverFlow from "../src/components/home/getIcons/StackOverFlow";
+import Github from "./components/getIcons/Github";
+import FrontendMentor from "./components/getIcons/FrontendMentor";
+import Twitter from "./components/getIcons/Twitter";
+import Linkedin from "./components/getIcons/Linkedin";
+import Youtube from "./components/getIcons/Youtube";
+import Facebook from "./components/getIcons/Facebook";
+import Twitch from "./components/getIcons/Twitch";
+import DevTo from "./components/getIcons/DevTo";
+import Codewars from "./components/getIcons/Codewars";
+import Codepen from "./components/getIcons/Codepen";
+import FreeCodeCamp from "./components/getIcons/FreeCodeCamp";
+import Gitlab from "./components/getIcons/Gitlab";
+import Hashnode from "./components/getIcons/Hashnode";
+import StackOverFlow from "./components/getIcons/StackOverFlow";
 import { Platform as PlatformType } from "./types/LinkType";
 
 export const getIcon = (value: PlatformType, isSelected: boolean, isMockup: boolean) => {

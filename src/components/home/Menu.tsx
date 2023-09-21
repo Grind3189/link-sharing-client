@@ -1,18 +1,37 @@
 import arrowDownIc from "../../assets/icon-arrow-down.svg";
 import MenuList from "./MenuList";
 import { LinkType } from "../../types/LinkType";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { getIcon } from "../../util";
+
 interface MenuProp {
   linkInfo: LinkType;
 }
 
 const Menu = ({ linkInfo }: MenuProp) => {
   const [toggleMenu, setToggleMenu] = useState<boolean>(false);
+  const menuListRef = useRef<HTMLDivElement>(null)
 
   const handleToggle = () => {
     setToggleMenu((prev) => !prev);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+
+      if(menuListRef.current && !menuListRef.current.contains(event.target as Node)) {
+        setToggleMenu(false)
+      }
+    }
+
+    if(toggleMenu) {
+      document.addEventListener('click', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [toggleMenu])
 
 
   return (
@@ -22,8 +41,9 @@ const Menu = ({ linkInfo }: MenuProp) => {
          gap-3 rounded-lg border 
           bg-white px-4 py-3 ${toggleMenu ? 'border-purple-300 shadow-purple' : 'border-borders'}`}
         onClick={handleToggle}
+        ref={menuListRef}
       >
-        {getIcon(linkInfo.platform, false)}
+        {getIcon(linkInfo.platform, false, false)}
         <span className="mr-auto w-full">{linkInfo.platform}</span>
         <img
           src={arrowDownIc}
@@ -42,7 +62,7 @@ const Menu = ({ linkInfo }: MenuProp) => {
               : "invisible translate-y-[-50%] opacity-0"
           }`}
       >
-        <MenuList linkInfo={linkInfo} />
+        <MenuList linkInfo={linkInfo}/>
       </div>
     </section>
   );

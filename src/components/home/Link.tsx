@@ -1,26 +1,36 @@
 import { LinkType } from "../../types/LinkType";
 import { LinkContext } from "../../context/LinkContextProvider";
-import {useContext} from 'react'
+import { useContext } from "react";
 import iconDnD from "../../assets/icon-drag-and-drop.svg";
 import linkIc from "../../assets/icon-link-copied-to-clipboard.svg";
 import Menu from "./Menu";
+import { DraggableProvided } from "react-beautiful-dnd";
 
 interface LinkProp {
   linkInfo: LinkType;
   index: number;
+  provided: DraggableProvided;
 }
 
-const Link = ({ linkInfo, index }: LinkProp) => {
-  const {handleRemoveLink} = useContext(LinkContext)
+const Link = ({ linkInfo, index, provided }: LinkProp) => {
+  const { handleRemoveLink } = useContext(LinkContext);
 
   return (
     <>
-      <div className="mb-3 flex items-center justify-between text-grey-200">
+      <div
+        className="mb-3 flex items-center justify-between text-grey-200"
+        {...provided.dragHandleProps}
+      >
         <div className="flex items-center gap-2">
           <img src={iconDnD} alt="drag and drop icon" />
           <span className="font-bold">Link #{index + 1}</span>
         </div>
-        <button className="text-body_m" onClick={() => handleRemoveLink(linkInfo.id)}>Remove</button>
+        <button
+          className="text-body_m"
+          onClick={() => handleRemoveLink(linkInfo.id)}
+        >
+          Remove
+        </button>
       </div>
 
       <div className="flex flex-col text-grey-300">
@@ -42,6 +52,8 @@ const Link = ({ linkInfo, index }: LinkProp) => {
             id="link"
             className="w-full outline-none"
           />
+          <span>Error</span>
+          {/* add validation */}
         </div>
       </div>
     </>

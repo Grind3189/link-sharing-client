@@ -1,4 +1,4 @@
-import { IconType } from "../../../types/IconType";
+import { IconType } from "../../types/IconType";
 
 const FreeCodeCamp = ({ isSelected, isMockup }: IconType) => {
   if (isMockup) {

@@ -25,11 +25,12 @@ function Home() {
             the world!
           </p>
           <button
-            className="mb-6 w-full rounded-lg border py-[11px] font-semibold text-purple-300"
+            className="mb-6 w-full rounded-lg border py-[11px] font-semibold text-purple-300 hover:bg-purple-100"
             onClick={handleAddLink}
           >
             + Add new link
           </button>
+
           {linksData.length ? <LinksList /> : <EmptyPlaceholder />}
         </div>
       </section>
@@ -40,7 +41,7 @@ function Home() {
       >
         <button
           className={`h-[46px] w-full rounded-lg
-         bg-purple-300 font-semibold text-white md:w-[91px] `}
+         bg-purple-300 font-semibold text-white md:w-[91px] hover:bg-purple-200 `}
         >
           Save
         </button>

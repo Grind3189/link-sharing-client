@@ -1,35 +1,36 @@
-import logoSm from "../../assets/logo-devlinks-small.svg"
-import logoLg from "../../assets/logo-devlinks-large.svg"
-import previewIc from "../../assets/icon-preview-header.svg"
-import GetLinkIc from "./GetLinkIc"
-import GetProfileIc from "./GetProfileIc"
-import { Link, NavLink } from "react-router-dom"
-import { useState, useEffect } from "react"
+import logoSm from "../../assets/logo-devlinks-small.svg";
+import logoLg from "../../assets/logo-devlinks-large.svg";
+import previewIc from "../../assets/icon-preview-header.svg";
+import GetLinkIc from "./GetLinkIc";
+import GetProfileIc from "./GetProfileIc";
+import { Link, NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
-  const [activeNav, setActiveNav] = useState<string>("")
-  const [width, setWidth] = useState<number>(window.innerWidth)
-  const gridCenter = `grid place-items-center`
+  const [activeNav, setActiveNav] = useState<string>("");
+  const [width, setWidth] = useState<number>(window.innerWidth);
+  const [hover, setHover] = useState<string>("");
+  const gridCenter = `grid place-items-center`;
 
   useEffect(() => {
     const handleChangeWidth = () => {
-      setWidth(window.innerWidth)
-    }
+      setWidth(window.innerWidth);
+    };
 
-    window.addEventListener("resize", handleChangeWidth)
+    window.addEventListener("resize", handleChangeWidth);
 
     return () => {
-      window.removeEventListener("resize", handleChangeWidth)
-    }
-  }, [])
+      window.removeEventListener("resize", handleChangeWidth);
+    };
+  }, []);
 
   const getActiveNavStyle = (value: string) => {
-    setActiveNav(value)
+    setActiveNav(value);
     const activeNavStyle = {
       backgroundColor: "#EFEBFF",
-    }
-    return activeNavStyle
-  }
+    };
+    return activeNavStyle;
+  };
 
   return (
     <header className={`bg-white px-6 py-4 ${gridCenter} h-full`}>
@@ -41,33 +42,41 @@ const Navbar = () => {
         <div className="mx-auto flex h-full">
           <NavLink
             to="."
-            className={`${gridCenter} px-[27px] rounded-lg md:flex gap-2`}
+            className={`${gridCenter} gap-2 rounded-lg px-[27px] md:flex`}
             style={({ isActive }) =>
               isActive ? getActiveNavStyle("home") : undefined
             }
+            onMouseEnter={() => setHover("home")}
+            onMouseLeave={() => setHover("")}
           >
-            <GetLinkIc activeNav={activeNav} width={width} />
+            <GetLinkIc activeNav={activeNav} width={width} hover={hover} />
           </NavLink>
           <NavLink
             to="profile"
-            className={`${gridCenter} px-[27px] rounded-lg md:flex gap-2`}
+            className={`${gridCenter} gap-2 rounded-lg px-[27px] md:flex`}
             style={({ isActive }) =>
               isActive ? getActiveNavStyle("profile") : undefined
             }
+            onMouseEnter={() => setHover("profile")}
+            onMouseLeave={() => setHover("")}
           >
-            <GetProfileIc activeNav={activeNav} width={width} />
+            <GetProfileIc activeNav={activeNav} width={width} hover={hover} />
           </NavLink>
         </div>
 
         <NavLink
           to="preview"
-          className={`h-full px-4 border border-purple-300 ${gridCenter} rounded-lg`}
+          className={`h-full border border-purple-300 px-4 ${gridCenter} rounded-lg hover:bg-purple-100`}
         >
-          {width >= 768 ? <span className="text-purple-300 font-semibold">Preview</span> : <img src={previewIc} alt="" /> }
+          {width >= 768 ? (
+            <span className="font-semibold text-purple-300">Preview</span>
+          ) : (
+            <img src={previewIc} alt="" />
+          )}
         </NavLink>
       </nav>
     </header>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
