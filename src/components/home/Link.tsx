@@ -53,7 +53,7 @@ const Link = ({ linkInfo, index, provided }: LinkProp) => {
             name="link"
             id={linkInfo.id}
             value={linkInfo.link}
-            className={`w-[80%] outline-none`}
+            className={`w-[70%] mr-auto outline-none`}
             onChange={handleChangeLink}
           />
           {linkInfo.error && <span className="text-body_s text-red">{width >= 768 && linkInfo.error}</span>}

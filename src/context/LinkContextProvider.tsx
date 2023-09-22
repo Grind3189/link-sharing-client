@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { LinkType } from "../types/LinkType";
 import { nanoid } from "nanoid/non-secure";
 import { Platform as PlatformType } from "../types/LinkType";
+import { isValidUrl } from "../util";
 
 interface LinkContextProviderProp {
   children: React.ReactNode;
@@ -94,7 +95,16 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
           ...linkInfo,
           error: "Can't be empty"
         }
-      } else return linkInfo
+      } else {
+        const isValid = isValidUrl(linkInfo.platform, linkInfo.link)
+        if(!isValid) {
+          hasError = true
+          return {
+            ...linkInfo,
+            error: "Please check the URL"
+          }
+        } else return linkInfo
+      } 
     })
 
     if(hasError) {
