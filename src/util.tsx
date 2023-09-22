@@ -14,6 +14,13 @@ import Hashnode from "./components/getIcons/Hashnode";
 import StackOverFlow from "./components/getIcons/StackOverFlow";
 import { Platform as PlatformType } from "./types/Types";
 
+
+export const checkChanges = (data: any, parsedData: any) => {
+  let isChanged = false
+   isChanged = JSON.stringify(data) !== JSON.stringify(parsedData)
+   return isChanged
+}
+
 export const getIcon = (
   value: PlatformType,
   isSelected: boolean,

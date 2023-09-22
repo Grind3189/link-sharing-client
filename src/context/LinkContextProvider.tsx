@@ -1,8 +1,8 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import { LinkType } from "../types/Types";
 import { nanoid } from "nanoid/non-secure";
 import { Platform as PlatformType } from "../types/Types";
-import { isValidUrl } from "../util";
+import { isValidUrl, checkChanges } from "../util";
 
 interface LinkContextProviderProp {
   children: React.ReactNode;
@@ -25,13 +25,7 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
   const prevData = localStorage.getItem('links')
   const parsedData: LinkType[] = prevData ? JSON.parse(prevData) : []
   const [linksData, setLinksData] = useState<LinkType[]>(parsedData);
-  const [hasChanges, setHasChanges] = useState<boolean>(false)
-
-  useEffect(() => {
-    const isChanged = JSON.stringify(linksData) !== JSON.stringify(parsedData);
-    setHasChanges(isChanged);
-  }, [linksData, parsedData]);
-
+  const hasChanges: boolean = checkChanges(linksData, parsedData)
 
   const handleRemoveLink = (id: string) => {
     const filteredData = linksData.filter((links) => links.id !== id);
@@ -95,23 +89,27 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
           ...linkInfo,
           error: "Can't be empty"
         }
-      } else {
+      }  
         const isValid = isValidUrl(linkInfo.platform, linkInfo.link)
-
         if(!isValid) {
           hasError = true
           return {
             ...linkInfo,
             error: "Please check the URL"
           }
-        } else return linkInfo
-      } 
+        } 
+      //if there's no error
+      return {
+        ...linkInfo,
+        error: ''
+      }
     })
 
     if(hasError) {
       return setLinksData(updatedData)
     } else {
-      localStorage.setItem('links', JSON.stringify(linksData))
+      setLinksData(updatedData)
+      localStorage.setItem('links', JSON.stringify(updatedData))
     }
 
   }

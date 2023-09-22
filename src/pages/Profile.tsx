@@ -1,15 +1,18 @@
 import Mockup from "../components/mockup/Mockup";
 import ProfileForm from "../components/profile/ProfileForm";
+import { ProfileContext } from "../context/ProfileContextProvider";
+import { useContext } from "react";
 
 function Profile() {
+  const {handleSaveProfile, hasChanges} = useContext(ProfileContext)
 
   return (
     <main className="relative h-full justify-between lg:flex lg:gap-6">
-      <Mockup/>
+      <Mockup />
 
       <section
         className={`h-[100%]
-        rounded-lg bg-white lg:w-[60%] lg:rounded-xl overflow-scroll`}
+        overflow-scroll rounded-lg bg-white lg:w-[60%] lg:rounded-xl`}
       >
         <div className="p-6">
           <h1 className="text-[24px] font-bold text-grey-300 md:text-heading_m">
@@ -29,7 +32,10 @@ function Profile() {
       >
         <button
           className={`h-[46px] w-full rounded-lg
-         bg-purple-300 font-semibold text-white hover:bg-purple-200 disabled:cursor-not-allowed disabled:bg-purple-200 md:w-[91px]`}
+         bg-purple-300 font-semibold text-white hover:bg-purple-200
+          disabled:cursor-not-allowed disabled:bg-purple-200 md:w-[91px]`}
+          onClick={handleSaveProfile}
+          disabled={!hasChanges}
         >
           Save
         </button>

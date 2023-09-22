@@ -30,7 +30,7 @@ export interface ProfileType {
   name: string,
   lastname: string,
   email: string,
-  picture: string
+  image: string
 }
 
 interface UserType {

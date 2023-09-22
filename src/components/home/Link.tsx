@@ -15,8 +15,9 @@ interface LinkProp {
 
 const Link = ({ linkInfo, index, provided }: LinkProp) => {
   const { handleRemoveLink, handleChangeLink } = useContext(LinkContext);
-  const {width} = useContext(WidthContext)
+  const { width } = useContext(WidthContext);
 
+  console.log(linkInfo)
   return (
     <>
       <div
@@ -45,7 +46,11 @@ const Link = ({ linkInfo, index, provided }: LinkProp) => {
         <label htmlFor="link" className="mt-3 text-body_s">
           Link
         </label>
-        <div className={`group flex items-center gap-3 rounded-lg border border-borders bg-white px-4 py-3  ${linkInfo.error && 'border-red'}`}>
+        <div
+          className={`group flex items-center gap-3 rounded-lg border bg-white px-4 py-3  ${
+            linkInfo.error ? "border-red" : "border-borders"
+          }`}
+        >
           <img src={linkIc} alt="link icon" />
           <input
             type="text"
@@ -53,10 +58,14 @@ const Link = ({ linkInfo, index, provided }: LinkProp) => {
             name="link"
             id={linkInfo.id}
             value={linkInfo.link}
-            className={`w-[70%] mr-auto outline-none`}
+            className={`mr-auto w-[70%] outline-none`}
             onChange={handleChangeLink}
           />
-          {linkInfo.error && <span className="text-body_s text-red">{width >= 768 && linkInfo.error}</span>}
+          {linkInfo.error && (
+            <span className="text-body_s text-red">
+              {width >= 768 && linkInfo.error}
+            </span>
+          )}
         </div>
       </div>
     </>
