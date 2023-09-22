@@ -14,9 +14,17 @@ export type Platform =
   | "Hashnode"
   | "Stack Overflow";
 
-export type LinkType = {
+export interface LinkType {
   id: string;
   platform: Platform;
   link: string;
   error: string;
 };
+
+export type UserType = {
+  name: string,
+  lastname: string,
+  email: string,
+  password: string,
+  links: LinkType[]
+}
