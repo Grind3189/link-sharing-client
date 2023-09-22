@@ -1,4 +1,4 @@
-import { LinkType, Platform } from "../../types/LinkType";
+import { LinkType, Platform } from "../../types/Types";
 import { Link } from "react-router-dom";
 import { getIcon } from "../../util";
 interface MockupListProp {
@@ -45,7 +45,7 @@ const MockupList = ({ linkInfo }: MockupListProp) => {
       to={linkInfo.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="mb-5 flex h-[44px] w-[237px] items-center rounded-lg border px-4 first-of-type:mt-[277px]"
+      className="mb-5 flex h-[44px] w-[237px] items-center rounded-lg border px-4 last-of-type:mb-0"
       style={getStyle(linkInfo.platform)}
     >
       {getIcon(linkInfo.platform, false, true)}

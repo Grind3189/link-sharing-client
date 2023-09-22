@@ -1,3 +1,8 @@
+export interface IconType {
+  isSelected: boolean
+  isMockup: boolean
+}
+
 export type Platform =
   | "GitHub"
   | "Frontend Mentor"
@@ -21,10 +26,20 @@ export interface LinkType {
   error: string;
 };
 
-export type UserType = {
+export interface ProfileType {
   name: string,
   lastname: string,
   email: string,
-  password: string,
+  picture: string
+}
+
+interface UserType {
+  email: string,
+  password: string
+}
+
+export type CreatorType = {
+  user: UserType
+  profile: ProfileType
   links: LinkType[]
 }

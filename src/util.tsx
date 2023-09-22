@@ -12,7 +12,7 @@ import FreeCodeCamp from "./components/getIcons/FreeCodeCamp";
 import Gitlab from "./components/getIcons/Gitlab";
 import Hashnode from "./components/getIcons/Hashnode";
 import StackOverFlow from "./components/getIcons/StackOverFlow";
-import { Platform as PlatformType } from "./types/LinkType";
+import { Platform as PlatformType } from "./types/Types";
 
 export const getIcon = (
   value: PlatformType,

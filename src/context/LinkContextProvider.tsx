@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
-import { LinkType } from "../types/LinkType";
+import { LinkType } from "../types/Types";
 import { nanoid } from "nanoid/non-secure";
-import { Platform as PlatformType } from "../types/LinkType";
+import { Platform as PlatformType } from "../types/Types";
 import { isValidUrl } from "../util";
 
 interface LinkContextProviderProp {
@@ -97,6 +97,7 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
         }
       } else {
         const isValid = isValidUrl(linkInfo.platform, linkInfo.link)
+
         if(!isValid) {
           hasError = true
           return {

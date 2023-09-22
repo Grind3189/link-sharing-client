@@ -1,9 +1,11 @@
 import Mockup from "../components/mockup/Mockup";
 import ProfileForm from "../components/profile/ProfileForm";
+
 function Profile() {
+
   return (
     <main className="relative h-full justify-between lg:flex lg:gap-6">
-      <Mockup />
+      <Mockup/>
 
       <section
         className={`h-[100%]

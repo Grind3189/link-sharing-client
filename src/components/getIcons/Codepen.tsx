@@ -1,4 +1,4 @@
-import { IconType } from "../../types/IconType";
+import { IconType } from "../../types/Types";
 
 const Codepen = ({isSelected, isMockup}: IconType) => {
   return (

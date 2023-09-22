@@ -1,4 +1,4 @@
-import { IconType } from "../../types/IconType";
+import { IconType } from "../../types/Types";
 
 
 const StackOverFlow = ({isSelected, isMockup}: IconType) => {

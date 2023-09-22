@@ -1,4 +1,4 @@
-import { LinkType } from "../../types/LinkType";
+import { LinkType } from "../../types/Types";
 import { LinkContext } from "../../context/LinkContextProvider";
 import { useContext } from "react";
 import iconDnD from "../../assets/icon-drag-and-drop.svg";

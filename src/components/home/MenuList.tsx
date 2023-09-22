@@ -1,4 +1,4 @@
-import { LinkType, Platform } from "../../types/LinkType";
+import { LinkType, Platform } from "../../types/Types";
 import { LinkContext } from "../../context/LinkContextProvider";
 import { useContext } from "react";
 import { getIcon } from "../../util";
