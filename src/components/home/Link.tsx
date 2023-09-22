@@ -5,6 +5,7 @@ import iconDnD from "../../assets/icon-drag-and-drop.svg";
 import linkIc from "../../assets/icon-link-copied-to-clipboard.svg";
 import Menu from "./Menu";
 import { DraggableProvided } from "react-beautiful-dnd";
+import { WidthContext } from "../../context/WidthContextProvider";
 
 interface LinkProp {
   linkInfo: LinkType;
@@ -13,7 +14,8 @@ interface LinkProp {
 }
 
 const Link = ({ linkInfo, index, provided }: LinkProp) => {
-  const { handleRemoveLink } = useContext(LinkContext);
+  const { handleRemoveLink, handleChangeLink } = useContext(LinkContext);
+  const {width} = useContext(WidthContext)
 
   return (
     <>
@@ -43,17 +45,18 @@ const Link = ({ linkInfo, index, provided }: LinkProp) => {
         <label htmlFor="link" className="mt-3 text-body_s">
           Link
         </label>
-        <div className="group flex items-center gap-3 rounded-lg border border-borders bg-white px-4 py-3">
+        <div className={`group flex items-center gap-3 rounded-lg border border-borders bg-white px-4 py-3  ${linkInfo.error && 'border-red'}`}>
           <img src={linkIc} alt="link icon" />
           <input
             type="text"
             placeholder="e.g. https://github.com/Grind3189"
             name="link"
-            id="link"
-            className="w-full outline-none"
+            id={linkInfo.id}
+            value={linkInfo.link}
+            className={`w-[80%] outline-none`}
+            onChange={handleChangeLink}
           />
-          <span>Error</span>
-          {/* add validation */}
+          {linkInfo.error && <span className="text-body_s text-red">{width >= 768 && linkInfo.error}</span>}
         </div>
       </div>
     </>

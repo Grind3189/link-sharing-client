@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { LinkType } from "../types/LinkType";
 import { nanoid } from "nanoid/non-secure";
 import { Platform as PlatformType } from "../types/LinkType";
@@ -13,12 +13,24 @@ interface LinkContextType {
   handleAddLink: () => void;
   handleReorderedLink: (data: LinkType[]) => void;
   handleChangePlatform: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleSave: () => void
+  hasChanges: boolean
+  handleChangeLink: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export const LinkContext = createContext({} as LinkContextType);
 
 const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
-  const [linksData, setLinksData] = useState<LinkType[]>([]);
+  const prevData = localStorage.getItem('links')
+  const parsedData: LinkType[] = prevData ? JSON.parse(prevData) : []
+  const [linksData, setLinksData] = useState<LinkType[]>(parsedData);
+  const [hasChanges, setHasChanges] = useState<boolean>(false)
+
+  useEffect(() => {
+    const isChanged = JSON.stringify(linksData) !== JSON.stringify(parsedData);
+    setHasChanges(isChanged);
+  }, [linksData, parsedData]);
+
 
   const handleRemoveLink = (id: string) => {
     const filteredData = linksData.filter((links) => links.id !== id);
@@ -33,6 +45,7 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
           platform: "GitHub",
           id: nanoid(),
           link: "",
+          error: ''
         },
       ];
     });
@@ -59,6 +72,40 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
     setLinksData(updatedData)
   }
 
+  const handleChangeLink = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const updatedData = linksData.map(link => {
+      if(link.id === e.target.id) {
+        return {
+          ...link,
+          [e.target.name]: e.target.value
+        }
+      } return link
+    })
+
+    setLinksData(updatedData)
+  }
+
+  const handleSave = () => {
+    let hasError = false
+    const updatedData = linksData.map(linkInfo => {
+      if(!linkInfo.link) {
+        hasError = true
+        return {
+          ...linkInfo,
+          error: "Can't be empty"
+        }
+      } else return linkInfo
+    })
+
+    if(hasError) {
+      return setLinksData(updatedData)
+    } else {
+      localStorage.setItem('links', JSON.stringify(linksData))
+    }
+
+  }
+
+
   return (
     <LinkContext.Provider
       value={{
@@ -66,7 +113,10 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
         handleRemoveLink,
         handleAddLink,
         handleReorderedLink,
-        handleChangePlatform
+        handleChangePlatform,
+        handleSave,
+        hasChanges,
+        handleChangeLink
       }}
     >
       {children}

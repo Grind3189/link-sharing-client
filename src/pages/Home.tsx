@@ -5,7 +5,7 @@ import { LinkContext } from "../context/LinkContextProvider";
 import Mockup from "../components/mockup/Mockup";
 
 function Home() {
-  const { handleAddLink, linksData } = useContext(LinkContext);
+  const { handleAddLink, linksData, handleSave, hasChanges } = useContext(LinkContext);
 
   return (
     <main className="relative h-full justify-between lg:flex lg:gap-6">
@@ -41,7 +41,9 @@ function Home() {
       >
         <button
           className={`h-[46px] w-full rounded-lg
-         bg-purple-300 font-semibold text-white md:w-[91px] hover:bg-purple-200 `}
+         bg-purple-300 font-semibold text-white md:w-[91px] hover:bg-purple-200 disabled:bg-purple-200 disabled:cursor-not-allowed`}
+         onClick={handleSave}
+         disabled={!hasChanges}
         >
           Save
         </button>

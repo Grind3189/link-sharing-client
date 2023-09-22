@@ -43,6 +43,8 @@ const MockupList = ({ linkInfo }: MockupListProp) => {
   return (
     <Link
       to={linkInfo.link}
+      target="_blank"
+      rel="noopener noreferrer"
       className="mb-5 flex h-[44px] w-[237px] items-center rounded-lg border px-4 first-of-type:mt-[277px]"
       style={getStyle(linkInfo.platform)}
     >

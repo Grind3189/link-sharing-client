@@ -3,77 +3,56 @@ import logoLg from "../../assets/logo-devlinks-large.svg";
 import previewIc from "../../assets/icon-preview-header.svg";
 import GetLinkIc from "./GetLinkIc";
 import GetProfileIc from "./GetProfileIc";
-import { Link, NavLink } from "react-router-dom";
-import { useState, useEffect } from "react";
-
+import { Link, useLocation } from "react-router-dom";
+import { useState, useContext } from "react";
+import { WidthContext } from "../../context/WidthContextProvider";
 const Navbar = () => {
-  const [activeNav, setActiveNav] = useState<string>("");
-  const [width, setWidth] = useState<number>(window.innerWidth);
   const [hover, setHover] = useState<string>("");
+  const currentPath = useLocation().pathname
+  const [activeNav, setActiveNav] = useState<string>(currentPath === '/' ? 'home' : 'profile');
+  const {width} = useContext(WidthContext)
   const gridCenter = `grid place-items-center`;
 
-  useEffect(() => {
-    const handleChangeWidth = () => {
-      setWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleChangeWidth);
-
-    return () => {
-      window.removeEventListener("resize", handleChangeWidth);
-    };
-  }, []);
-
-  const getActiveNavStyle = (value: string) => {
-    setActiveNav(value);
-    const activeNavStyle = {
-      backgroundColor: "#EFEBFF",
-    };
-    return activeNavStyle;
-  };
 
   return (
     <header className={`bg-white px-6 py-4 ${gridCenter} h-full`}>
       <nav className="flex h-[42px] w-full items-center">
-        <Link to="." className="">
+        <Link to="." className="" onClick={() => setActiveNav('home')}>
           <img src={width < 768 ? logoSm : logoLg} alt="" />
         </Link>
 
         <div className="mx-auto flex h-full">
-          <NavLink
+          <Link
             to="."
-            className={`${gridCenter} gap-2 rounded-lg px-[27px] md:flex`}
-            style={({ isActive }) =>
-              isActive ? getActiveNavStyle("home") : undefined
-            }
+            className={`${gridCenter} gap-2 rounded-lg px-[27px] md:flex ${activeNav === 'home' && 'bg-purple-100'}`}
             onMouseEnter={() => setHover("home")}
             onMouseLeave={() => setHover("")}
+            onClick={() => setActiveNav('home')}
           >
             <GetLinkIc activeNav={activeNav} width={width} hover={hover} />
-          </NavLink>
-          <NavLink
+          </Link>
+          <Link
             to="profile"
-            className={`${gridCenter} gap-2 rounded-lg px-[27px] md:flex`}
-            style={({ isActive }) =>
-              isActive ? getActiveNavStyle("profile") : undefined
-            }
+            className={`${gridCenter} gap-2 rounded-lg px-[27px] md:flex ${activeNav === 'profile' && 'bg-purple-100'}`}
             onMouseEnter={() => setHover("profile")}
             onMouseLeave={() => setHover("")}
+            onClick={() => setActiveNav('profile')}
           >
             <GetProfileIc activeNav={activeNav} width={width} hover={hover} />
-          </NavLink>
+          </Link>
         </div>
 
-        <NavLink
+        <Link
           to="preview"
           className={`h-full border border-purple-300 px-4 ${gridCenter} rounded-lg hover:bg-purple-100`}
+          onClick={() => setActiveNav('')}
         >
           {width >= 768 ? (
             <span className="font-semibold text-purple-300">Preview</span>
           ) : (
             <img src={previewIc} alt="" />
           )}
-        </NavLink>
+        </Link>
       </nav>
     </header>
   );
