@@ -8,7 +8,12 @@ const Mockup = () => {
   const { profileDetails } = useContext(ProfileContext);
   return (
     <section className="grid w-2/5 place-items-center rounded-xl bg-white max-lg:hidden">
-      <div className="relative flex h-[631px] w-[307px] flex-col items-center border bg-phone-mockup bg-cover">
+      <div className="relative flex h-[631px] w-[307px] flex-col items-center bg-phone-mockup bg-cover">
+        {profileDetails.image.url && (
+          <>
+            <img src={profileDetails.image.url} alt="profile picture" className="h-[96px] w-[96px] rounded-[50%] absolute top-[63px] border-4 border-purple-300 object-cover" />
+          </>
+        )}
         {profileDetails && (
           <>
             <span className="relative top-[179px] w-[90%] bg-white text-center text-[18px] font-semibold">
