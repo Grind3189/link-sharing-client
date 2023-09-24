@@ -4,6 +4,7 @@ import Register from './pages/Register'
 import Layout from './components/layout/Layout'
 import Home from './pages/Home'
 import Profile from './pages/Profile'
+import Preview from './pages/Preview'
 function App() {
 
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path='/profile' element={<Profile />} />
       </Route>
+      <Route path='/preview' element={<Preview />} />
     </Routes>
   )
 }
