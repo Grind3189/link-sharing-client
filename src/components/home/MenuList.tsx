@@ -29,11 +29,12 @@ const MenuList = ({ linkInfo }: MenuListProp) => {
 
   return (
     <>
-      {platformChoices.map((platform) => {
+      {platformChoices.map((platform, index) => {
         return (
           <div
             className={`border-b border-borders py-3
         first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0`}
+        key={index}
           >
             <label
               htmlFor={`${linkInfo.id}-${platform}`}

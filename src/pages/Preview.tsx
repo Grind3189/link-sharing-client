@@ -7,7 +7,7 @@ import MockupList from "../components/mockup/MockupList";
 function Preview() {
   const { linksData } = useContext(LinkContext);
   const { profileDetails } = useContext(ProfileContext);
-  console.log(linksData)
+  
   return (
     <main className="px-6 py-4 md:p-6">
       <div className="fixed left-0 right-0 top-0 z-[-10] h-[357px] rounded-b-[32px] bg-purple-300 max-md:hidden" />

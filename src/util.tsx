@@ -14,6 +14,9 @@ import Hashnode from "./components/getIcons/Hashnode";
 import StackOverFlow from "./components/getIcons/StackOverFlow";
 import { Platform as PlatformType } from "./types/Types";
 
+export const getApiUrl = () => {
+  return "http://localhost:1930"
+}
 
 export const checkChanges = (data: any, parsedData: any) => {
   let isChanged = false
