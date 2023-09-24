@@ -1,8 +1,9 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { LinkType } from "../types/Types";
 import { nanoid } from "nanoid/non-secure";
 import { Platform as PlatformType } from "../types/Types";
-import { isValidUrl, checkChanges } from "../util";
+import { isValidUrl, checkChanges, getApiUrl } from "../util";
+import { AuthContext } from "./AuthContextProvider";
 
 interface LinkContextProviderProp {
   children: React.ReactNode;
@@ -17,15 +18,32 @@ interface LinkContextType {
   handleSave: () => void
   hasChanges: boolean
   handleChangeLink: (e: React.ChangeEvent<HTMLInputElement>) => void
+  linkLoading: boolean
 }
 
 export const LinkContext = createContext({} as LinkContextType);
 
 const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
+  const uri = getApiUrl()
+  const {isAuth, setIsAuth} = useContext(AuthContext)
   const prevData = localStorage.getItem('links')
   const parsedData: LinkType[] = prevData ? JSON.parse(prevData) : []
   const [linksData, setLinksData] = useState<LinkType[]>(parsedData);
+  const [linkLoading, setLinkLoading] = useState<boolean>(false)
   const hasChanges: boolean = checkChanges(linksData, parsedData)
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      setLinkLoading(true)
+      const res = await fetch(`${uri}/api/links`, {credentials: "include"})
+      const data = await res.json()
+      setLinksData(data)
+      setLinkLoading(false)
+    }
+    if(isAuth) {
+      fetchData()
+    }
+  }, [isAuth])
 
   const handleRemoveLink = (id: string) => {
     const filteredData = linksData.filter((links) => links.id !== id);
@@ -125,7 +143,8 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
         handleChangePlatform,
         handleSave,
         hasChanges,
-        handleChangeLink
+        handleChangeLink,
+        linkLoading
       }}
     >
       {children}

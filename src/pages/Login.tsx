@@ -3,8 +3,9 @@ import emailIc from "../assets/icon-email.svg";
 import passwordIc from "../assets/icon-password.svg";
 import InputContainer from "../components/form/InputContainer";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { getApiUrl } from "../util";
+import { AuthContext } from "../context/AuthContextProvider";
 
 interface LoginDataState {
   email: string;
@@ -20,6 +21,8 @@ interface ErrorState {
 function Login() {
   const url = getApiUrl();
   const navigate = useNavigate();
+  const {setIsAuth} = useContext(AuthContext)
+  
   const [loginData, setLoginData] = useState<LoginDataState>({
     email: "",
     password: "",
@@ -56,6 +59,7 @@ function Login() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include"
       });
 
       if (!res.ok) {
@@ -70,6 +74,7 @@ function Login() {
         return;
       }
       await res.json();
+      setIsAuth(true)
       navigate("/");
     } catch (err: any) {
       setError((prev) => ({ ...prev, general: err.message }));

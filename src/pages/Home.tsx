@@ -2,10 +2,13 @@ import EmptyPlaceholder from "../components/home/EmptyPlaceholder";
 import LinksList from "../components/home/LinksList";
 import { useContext } from "react";
 import { LinkContext } from "../context/LinkContextProvider";
+import { AuthContext } from "../context/AuthContextProvider";
 import Mockup from "../components/mockup/Mockup";
 
 function Home() {
-  const { handleAddLink, linksData, handleSave, hasChanges } = useContext(LinkContext);
+  const { handleAddLink, linksData, handleSave, hasChanges, linkLoading } =
+    useContext(LinkContext);
+  const { isCheckingAuth } = useContext(AuthContext);
 
   return (
     <main className="relative h-full justify-between lg:flex lg:gap-6">
@@ -31,7 +34,13 @@ function Home() {
             + Add new link
           </button>
 
-          {linksData.length ? <LinksList /> : <EmptyPlaceholder />}
+          {isCheckingAuth || linkLoading ? (
+            <h1 className="font-bold">Loading...</h1>
+          ) : linksData.length ? (
+            <LinksList />
+          ) : (
+            <EmptyPlaceholder />
+          )}
         </div>
       </section>
       <div
@@ -41,9 +50,9 @@ function Home() {
       >
         <button
           className={`h-[46px] w-full rounded-lg
-         bg-purple-300 font-semibold text-white md:w-[91px] hover:bg-purple-200 disabled:bg-purple-200 disabled:cursor-not-allowed`}
-         onClick={handleSave}
-         disabled={!hasChanges}
+         bg-purple-300 font-semibold text-white hover:bg-purple-200 disabled:cursor-not-allowed disabled:bg-purple-200 md:w-[91px]`}
+          onClick={handleSave}
+          disabled={!hasChanges}
         >
           Save
         </button>

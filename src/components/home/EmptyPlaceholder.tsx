@@ -1,6 +1,7 @@
 import emptyIllustration from "../../assets/illustration-empty.svg";
 
 const EmptyPlaceholder = () => {
+
   return (
     <div
       className={`mb-[25px] flex h-[377px] flex-col items-center justify-center rounded-lg bg-grey-100 px-4 md:h-[509px]`}
