@@ -25,13 +25,11 @@ const AuthContextProvider = ({ children }: AuthContextProviderProp) => {
       });
       setIsCheckingAuth(false)
       if (!res.ok) return setIsAuth(false);
-
       setIsAuth(true);
     };
 
     fetchData();
   }, []);
-
 
   return (
     <AuthContext.Provider value={{ isAuth, setIsAuth, isCheckingAuth }}>

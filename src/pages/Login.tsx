@@ -2,7 +2,7 @@ import logoLg from "../assets/logo-devlinks-large.svg";
 import emailIc from "../assets/icon-email.svg";
 import passwordIc from "../assets/icon-password.svg";
 import InputContainer from "../components/form/InputContainer";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useContext } from "react";
 import { getApiUrl } from "../util";
 import { AuthContext } from "../context/AuthContextProvider";
@@ -21,6 +21,8 @@ interface ErrorState {
 function Login() {
   const url = getApiUrl();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams()
+  const params = searchParams.get("redirectTo")
   const {setIsAuth} = useContext(AuthContext)
   
   const [loginData, setLoginData] = useState<LoginDataState>({
@@ -51,7 +53,7 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setIsAuth(false)
     try {
       const res = await fetch(`${url}/api/login`, {
         method: "POST",
@@ -73,9 +75,10 @@ function Login() {
         }
         return;
       }
-      await res.json();
+      const {userId} = await res.json();
+      localStorage.setItem("userId", userId)
       setIsAuth(true)
-      navigate("/");
+      navigate(params ? params : "/", {replace: true});
     } catch (err: any) {
       setError((prev) => ({ ...prev, general: err.message }));
     }

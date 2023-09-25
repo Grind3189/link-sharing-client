@@ -10,7 +10,7 @@ const GetLoginIc = ({ width, hover }: GetLoginProp) => {
         fill="none"
         viewBox="0 0 24 24"
         strokeWidth="1.5"
-        stroke={hover === 'login' ? "#633CFF" : "#737373"}
+        stroke={hover === "login" ? "#633CFF" : "#737373"}
         width="21"
         height="20"
       >
@@ -22,7 +22,9 @@ const GetLoginIc = ({ width, hover }: GetLoginProp) => {
       </svg>
       {width >= 1280 && (
         <span
-          className={`font-semibold ${hover === 'login' ? 'text-purple-300' : 'text-grey-200'}`}
+          className={`font-semibold ${
+            hover === "login" ? "text-purple-300" : "text-grey-200"
+          }`}
         >
           Login
         </span>

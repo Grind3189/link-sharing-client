@@ -17,7 +17,6 @@ const Link = ({ linkInfo, index, provided }: LinkProp) => {
   const { handleRemoveLink, handleChangeLink } = useContext(LinkContext);
   const { width } = useContext(WidthContext);
 
-  console.log(linkInfo)
   return (
     <>
       <div

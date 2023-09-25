@@ -1,6 +1,7 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { ProfileType } from "../types/Types";
-import { checkChanges } from "../util";
+import { checkChanges, getApiUrl } from "../util";
+import { AuthContext } from "./AuthContextProvider";
 
 interface EmptyErrorState {
   name: boolean;
@@ -14,6 +15,7 @@ interface ProfileContextType {
   hasChanges: boolean;
   handleUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isUploading: boolean
+  loadingProfile: boolean
 }
 export const ProfileContext = createContext({} as ProfileContextType);
 
@@ -22,8 +24,11 @@ interface ProfileContextProviderProp {
 }
 
 const ProfileContextProvider = ({ children }: ProfileContextProviderProp) => {
+  const uri = getApiUrl()
+  const {isAuth} = useContext(AuthContext)
+  const [loadingProfile, setLoadingProfile ] = useState<boolean>(true)
   const prevData = localStorage.getItem("profile");
-  const parsedData = prevData
+  const parsedData = prevData && !loadingProfile
     ? JSON.parse(prevData)
     : {
         email: "",
@@ -36,6 +41,8 @@ const ProfileContextProvider = ({ children }: ProfileContextProviderProp) => {
         },
       };
   const [profileDetails, setProfileDetails] = useState<ProfileType>(parsedData);
+
+  
   const [isUploading, setIsUploading] = useState<boolean>(false)
 
   const [emptyError, setEmptyError] = useState<EmptyErrorState>({
@@ -45,6 +52,24 @@ const ProfileContextProvider = ({ children }: ProfileContextProviderProp) => {
   const hasChanges: boolean = checkChanges(profileDetails, parsedData);
   const cloudinary = import.meta.env.VITE_CLOUDINARY;
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(`${uri}/api/profile`, {credentials: "include"})
+      const data = await res.json()
+      setLoadingProfile(false)
+      setProfileDetails(data)
+    }
+    if(isAuth) {
+      setLoadingProfile(true)
+      fetchData()
+    } else {
+      setLoadingProfile(false)
+      setProfileDetails(parsedData)
+    }
+  }, [isAuth])
+
+
+
   const handleChangeProfile = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfileDetails((prev) => ({
       ...prev,
@@ -52,7 +77,7 @@ const ProfileContextProvider = ({ children }: ProfileContextProviderProp) => {
     }));
   };
 
-  const handleSaveProfile = () => {
+  const handleSaveProfile = async () => {
     if (!profileDetails.name) {
       setEmptyError((prev) => ({ ...prev, name: true }));
     } else setEmptyError((prev) => ({ ...prev, name: false }));
@@ -61,7 +86,21 @@ const ProfileContextProvider = ({ children }: ProfileContextProviderProp) => {
     } else setEmptyError((prev) => ({ ...prev, lastname: false }));
 
     if (profileDetails.name && profileDetails.lastname) {
-      localStorage.setItem("profile", JSON.stringify(profileDetails));
+
+      if(isAuth) {
+        const res = await fetch(`${uri}/api/updateProfile`, {
+          method: 'PUT',
+          body: JSON.stringify(profileDetails),
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "include"
+        })
+        const updatedData = await res.json()
+        setProfileDetails(updatedData)
+      } else {
+        localStorage.setItem("profile", JSON.stringify(profileDetails));
+      }
     }
   };
 
@@ -108,7 +147,8 @@ const ProfileContextProvider = ({ children }: ProfileContextProviderProp) => {
         emptyError,
         hasChanges,
         handleUpload,
-        isUploading
+        isUploading,
+        loadingProfile
       }}
     >
       {children}

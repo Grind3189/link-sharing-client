@@ -13,9 +13,10 @@ function App() {
       <Route path='/register' element={<Register />} />
       <Route path='/' element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route path='profile' element={<Profile />} />
       </Route>
       <Route path='/preview' element={<Preview />} />
+      <Route path='/preview/:userId' element={<Preview />} />
     </Routes>
   )
 }

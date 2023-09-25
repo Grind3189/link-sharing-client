@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { LinkType } from "../types/Types";
 import { nanoid } from "nanoid/non-secure";
 import { Platform as PlatformType } from "../types/Types";
-import { isValidUrl, checkChanges, getApiUrl } from "../util";
+import { isValidUrl, getApiUrl } from "../util";
 import { AuthContext } from "./AuthContextProvider";
 
 interface LinkContextProviderProp {
@@ -16,32 +16,36 @@ interface LinkContextType {
   handleReorderedLink: (data: LinkType[]) => void;
   handleChangePlatform: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleSave: () => void
-  hasChanges: boolean
   handleChangeLink: (e: React.ChangeEvent<HTMLInputElement>) => void
   linkLoading: boolean
+  apiError: string
+  setLinkLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const LinkContext = createContext({} as LinkContextType);
 
 const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
   const uri = getApiUrl()
-  const {isAuth, setIsAuth} = useContext(AuthContext)
+  const {isAuth} = useContext(AuthContext)
   const prevData = localStorage.getItem('links')
+  const [linkLoading, setLinkLoading] = useState<boolean>(true)
   const parsedData: LinkType[] = prevData ? JSON.parse(prevData) : []
-  const [linksData, setLinksData] = useState<LinkType[]>(parsedData);
-  const [linkLoading, setLinkLoading] = useState<boolean>(false)
-  const hasChanges: boolean = checkChanges(linksData, parsedData)
+  const [linksData, setLinksData] = useState<LinkType[]>(linkLoading ? [] : parsedData);
+  const [apiError, setApiError] = useState<string>("")
   
   useEffect(() => {
     const fetchData = async () => {
-      setLinkLoading(true)
       const res = await fetch(`${uri}/api/links`, {credentials: "include"})
       const data = await res.json()
       setLinksData(data)
       setLinkLoading(false)
     }
     if(isAuth) {
+      setLinkLoading(true)
       fetchData()
+    } else {
+      setLinkLoading(false)
+      setLinksData(parsedData)
     }
   }, [isAuth])
 
@@ -98,7 +102,7 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
     setLinksData(updatedData)
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     let hasError = false
     const updatedData = linksData.map(linkInfo => {
       if(!linkInfo.link) {
@@ -125,10 +129,31 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
 
     if(hasError) {
       return setLinksData(updatedData)
-    } else {
-      setLinksData(updatedData)
-      localStorage.setItem('links', JSON.stringify(updatedData))
-    }
+    } 
+
+      if(isAuth) {
+        try {
+          const res = await fetch(`${uri}/api/updateLinks`, {
+            method: 'PUT',
+            body: JSON.stringify(updatedData),
+            headers: {
+              "Content-Type": "application/json"
+            },
+            credentials: "include"
+          })
+          if(!res.ok){
+            throw new Error("Something went wrong")
+          }
+          const dataFromAPi = await res.json()
+          return setLinksData(dataFromAPi)
+        }
+        catch(err: any) {
+          setApiError(err.message)
+        }
+      } else {
+        setLinksData(updatedData)
+        localStorage.setItem('links', JSON.stringify(updatedData))
+      }
 
   }
 
@@ -142,9 +167,10 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
         handleReorderedLink,
         handleChangePlatform,
         handleSave,
-        hasChanges,
         handleChangeLink,
-        linkLoading
+        linkLoading,
+        apiError,
+        setLinkLoading
       }}
     >
       {children}

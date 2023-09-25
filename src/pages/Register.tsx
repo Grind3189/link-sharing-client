@@ -3,8 +3,9 @@ import emailIc from "../assets/icon-email.svg";
 import passwordIc from "../assets/icon-password.svg";
 import InputContainer from "../components/form/InputContainer";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { getApiUrl } from "../util";
+import { AuthContext } from "../context/AuthContextProvider";
 
 interface RegisterDataState {
   email: string;
@@ -18,6 +19,7 @@ interface ErrorState {
 }
 
 function Register() {
+  const {setIsAuth} = useContext(AuthContext)
   const url = getApiUrl();
   const navigate = useNavigate();
   const [registerData, setRegisterData] = useState<RegisterDataState>({
@@ -49,6 +51,7 @@ function Register() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsAuth(false)
 
     if (registerData.password !== registerData.repeatPassword) {
       return setError((prev) => ({
@@ -75,8 +78,10 @@ function Register() {
         }
         return;
       }
-      await res.json();
-      navigate("/");
+      const {userId} = await res.json();
+      localStorage.setItem('userId', userId)
+      setIsAuth(true)
+      navigate("/", {replace: true});
     } catch (err: any) {
       setError((prev) => ({ ...prev, general: err.message }));
     }

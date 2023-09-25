@@ -3,18 +3,30 @@ import logoLg from "../../assets/logo-devlinks-large.svg";
 import previewIc from "../../assets/icon-preview-header.svg";
 import GetLinkIc from "./GetLinkIc";
 import GetProfileIc from "./GetProfileIc";
+import GetLoginIc from "./GetLogin";
+import GetLogoutIc from "./GetLogoutIc";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useContext } from "react";
 import { WidthContext } from "../../context/WidthContextProvider";
-import GetLoginIc from "./GetLogin";
+import { AuthContext } from "../../context/AuthContextProvider";
+import { getApiUrl } from "../../util";
+
 const Navbar = () => {
+  const uri = getApiUrl()
   const [hover, setHover] = useState<string>("");
   const currentPath = useLocation().pathname;
+  
+  const { isAuth, setIsAuth } = useContext(AuthContext);
   const [activeNav, setActiveNav] = useState<string>(
     currentPath === "/" ? "home" : "profile",
   );
   const { width } = useContext(WidthContext);
   const gridCenter = `grid place-items-center`;
+
+  const handleLogout = async () => {
+   await fetch(`${uri}/api/logout`, {credentials: "include"})
+    setIsAuth(false)
+  };
 
   return (
     <header className={`bg-white px-6 py-4 ${gridCenter} h-full`}>
@@ -23,7 +35,7 @@ const Navbar = () => {
           <img src={width < 768 ? logoSm : logoLg} alt="" />
         </Link>
 
-        <div className="flex h-full mx-auto">
+        <div className="mx-auto flex h-full">
           <Link
             to="."
             className={`${gridCenter} gap-2 rounded-lg px-[27px] md:flex ${
@@ -46,18 +58,28 @@ const Navbar = () => {
           >
             <GetProfileIc activeNav={activeNav} width={width} hover={hover} />
           </Link>
-          <Link
-            to="login"
-            className={`${gridCenter} gap-2 rounded-lg px-[27px] md:flex ${
-              activeNav === "login" && "bg-purple-100"
-            }`}
-            onMouseEnter={() => setHover("login")}
-            onMouseLeave={() => setHover("")}
-            onClick={() => setActiveNav('')}
-          >
-            <GetLoginIc width={width} hover={hover} />
-          </Link>
-          
+          {isAuth ? (
+            <button
+              className="flex items-center gap-2 px-[27px]"
+              onMouseEnter={() => setHover("logout")}
+              onMouseLeave={() => setHover("")}
+              onClick={handleLogout}
+            >
+              <GetLogoutIc width={width} hover={hover} />
+            </button>
+          ) : (
+            <Link
+              to={`login?redirectTo=${currentPath}`}
+              className={`${gridCenter} gap-2 rounded-lg px-[27px] md:flex ${
+                activeNav === "login" && "bg-purple-100"
+              }`}
+              onMouseEnter={() => setHover("login")}
+              onMouseLeave={() => setHover("")}
+              onClick={() => setActiveNav("")}
+            >
+              <GetLoginIc width={width} hover={hover} />
+            </Link>
+          )}
         </div>
 
         <Link

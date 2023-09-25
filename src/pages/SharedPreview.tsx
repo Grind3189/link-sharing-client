@@ -1,38 +1,17 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { LinkContext } from "../context/LinkContextProvider";
 import { ProfileContext } from "../context/ProfileContextProvider";
-import { useContext, useState, useEffect } from "react";
-import { LinkType, ProfileType } from "../types/Types";
+import { useContext } from "react";
 import MockupList from "../components/mockup/MockupList";
-
-type UserDataState = {
-  profile: ProfileType,
-  links: LinkType[]
-}
 
 function Preview() {
   const { linksData } = useContext(LinkContext);
   const { profileDetails } = useContext(ProfileContext);
-  const [userData, setUserData] = useState<UserDataState>({
-    profile: {...profileDetails},
-    links: [...linksData]
-  })
-
-
-  const userId = localStorage.getItem("userId")
-
-  console.log(userId)
-
-  const params = useParams().userId;
-
-  useEffect(() => {
-    
-  }, [])
-
+  
   return (
-    <main className="relative px-6 py-4 md:p-6">
+    <main className="px-6 py-4 md:p-6">
       <div className="fixed left-0 right-0 top-0 z-[-10] h-[357px] rounded-b-[32px] bg-purple-300 max-md:hidden" />
-      {params && <nav className="flex items-center justify-between rounded-xl font-semibold md:mb-[126px] md:bg-white md:px-6 md:py-4">
+      <nav className="mb-[76px] flex items-center justify-between rounded-xl font-semibold md:mb-[126px] md:bg-white md:px-6 md:py-4">
         <Link
           to="/"
           className="rounded-lg border border-purple-300 px-[27px] py-[11px] text-purple-300 hover:bg-purple-100"
@@ -45,13 +24,13 @@ function Preview() {
         >
           Share Link
         </Link>
-      </nav>}
+      </nav>
 
-      <section className="absolute left-0 right-0 top-[140px] mx-auto flex flex-col items-center md:w-[349px] md:-top-[-230px] md:rounded-3xl md:bg-white md:py-12 md:shadow-grey">
+      <section className="flex flex-col items-center md:mx-auto md:w-[349px] md:rounded-3xl md:bg-white md:py-12 md:shadow-grey">
         <div className="mb-[25px]">
-          {userData.profile.image.url ? (
+          {profileDetails.image.url ? (
             <img
-              src={userData.profile.image.url}
+              src={profileDetails.image.url}
               alt="profile picture"
               className="h-[104px] w-[104px] rounded-[50%] border-4 border-purple-300"
             />
@@ -60,22 +39,22 @@ function Preview() {
           )}
         </div>
 
-        {userData.profile.name ? (
+        {profileDetails.name ? (
           <h1 className="mb-2 text-heading_m font-bold text-grey-300">
-            {userData.profile.name} {userData.profile.lastname}
+            {profileDetails.name} {profileDetails.lastname}
           </h1>
         ) : (
           <div className="mb-2 h-[45px] w-[50%] rounded-full bg-[#EEEEEE]" />
         )}
 
-        {userData.profile.email ? (
-          <span className="mb-14 text-grey-200">{userData.profile.email}</span>
+        {profileDetails.email ? (
+          <span className="mb-14 text-grey-200">{profileDetails.email}</span>
         ) : (
           <div className="mb-14 h-5 w-[35%] rounded-full bg-[#EEEEEE]" />
         )}
 
         <div>
-          {userData.links.map((linkInfo, index) => {
+          {linksData.map((linkInfo, index) => {
             return <MockupList linkInfo={linkInfo} key={index} />;
           })}
         </div>

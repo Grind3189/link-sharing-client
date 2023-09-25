@@ -6,7 +6,7 @@ import { AuthContext } from "../context/AuthContextProvider";
 import Mockup from "../components/mockup/Mockup";
 
 function Home() {
-  const { handleAddLink, linksData, handleSave, hasChanges, linkLoading } =
+  const { handleAddLink, linksData, handleSave, linkLoading } =
     useContext(LinkContext);
   const { isCheckingAuth } = useContext(AuthContext);
 
@@ -52,7 +52,6 @@ function Home() {
           className={`h-[46px] w-full rounded-lg
          bg-purple-300 font-semibold text-white hover:bg-purple-200 disabled:cursor-not-allowed disabled:bg-purple-200 md:w-[91px]`}
           onClick={handleSave}
-          disabled={!hasChanges}
         >
           Save
         </button>
