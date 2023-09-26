@@ -1,15 +1,25 @@
 import EmptyPlaceholder from "../components/home/EmptyPlaceholder";
 import LinksList from "../components/home/LinksList";
+import Loading from "../components/Loading";
+import Mockup from "../components/mockup/Mockup";
+import Popup from "../components/popup/Popup";
+import SaveIc from "../assets/icon-changes-saved.svg";
 import { useContext } from "react";
 import { LinkContext } from "../context/LinkContextProvider";
 import { AuthContext } from "../context/AuthContextProvider";
-import Mockup from "../components/mockup/Mockup";
+import { WidthContext } from "../context/WidthContextProvider";
 
 function Home() {
-  const { handleAddLink, linksData, handleSave, linkLoading } =
-    useContext(LinkContext);
+  const {
+    handleAddLink,
+    linksData,
+    handleSave,
+    linkLoading,
+    isSaving,
+    linkSaved,
+  } = useContext(LinkContext);
   const { isCheckingAuth } = useContext(AuthContext);
-
+  const { width } = useContext(WidthContext);
 
   return (
     <main className="relative h-full justify-between lg:flex lg:gap-6">
@@ -50,13 +60,23 @@ function Home() {
            `}
       >
         <button
-          className={`h-[46px] w-full rounded-lg
+          className={`grid h-[46px] w-full place-items-center rounded-lg
          bg-purple-300 font-semibold text-white hover:bg-purple-200 disabled:cursor-not-allowed disabled:bg-purple-200 md:w-[91px]`}
           onClick={handleSave}
+          disabled={isSaving}
         >
-          Save
+          {isSaving ? <Loading /> : "Save"}
         </button>
       </div>
+
+      {linkSaved && (
+        <Popup>
+          <img src={SaveIc} alt="save icon" />
+          <span>
+            {width > 800 ? "Your changes have been successfully saved!" : "Saved"}
+          </span>
+        </Popup>
+      )}
     </main>
   );
 }

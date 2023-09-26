@@ -1,7 +1,7 @@
 import ProfileIc from "../getIcons/ProfileIc";
 import { useContext } from "react";
 import { ProfileContext } from "../../context/ProfileContextProvider";
-import Loading from "./Loading";
+import Loading from "../Loading";
 const UploadImage = () => {
   const { handleUpload, profileDetails, isUploading } =
     useContext(ProfileContext);

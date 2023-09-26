@@ -18,12 +18,6 @@ export const getApiUrl = () => {
   return "http://localhost:1930"
 }
 
-export const checkChanges = (data: any, parsedData: any) => {
-  let isChanged = false
-   isChanged = JSON.stringify(data) !== JSON.stringify(parsedData)
-   return isChanged
-}
-
 export const getIcon = (
   value: PlatformType,
   isSelected: boolean,

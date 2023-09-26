@@ -2,10 +2,11 @@ import logoLg from "../assets/logo-devlinks-large.svg";
 import emailIc from "../assets/icon-email.svg";
 import passwordIc from "../assets/icon-password.svg";
 import InputContainer from "../components/form/InputContainer";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useContext } from "react";
 import { getApiUrl } from "../util";
 import { AuthContext } from "../context/AuthContextProvider";
+import Loading from "../components/Loading";
 
 interface RegisterDataState {
   email: string;
@@ -22,6 +23,9 @@ function Register() {
   const {setIsAuth} = useContext(AuthContext)
   const url = getApiUrl();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams()
+  const params = searchParams.get("redirectTo")
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [registerData, setRegisterData] = useState<RegisterDataState>({
     email: "",
     password: "",
@@ -51,9 +55,11 @@ function Register() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true)
     setIsAuth(false)
 
     if (registerData.password !== registerData.repeatPassword) {
+      setIsLoading(false)
       return setError((prev) => ({
         ...prev,
         password: "Invalid password",
@@ -76,13 +82,16 @@ function Register() {
         if (res.status === 400) {
           setError((prev) => ({ ...prev, password: "Invalid password" }));
         }
+        setIsLoading(false)
         return;
       }
       const {userId} = await res.json();
+      setIsLoading(false)
       localStorage.setItem('userId', userId)
       setIsAuth(true)
-      navigate("/", {replace: true});
+      navigate(params ? params : "", {replace: true});
     } catch (err: any) {
+      setIsLoading(false)
       setError((prev) => ({ ...prev, general: err.message }));
     }
   };
@@ -156,8 +165,8 @@ function Register() {
           </InputContainer>
         </div>
         {error.general && <h3 className="mb-3 text-body_m text-red">{error.general}</h3>}
-        <button className="mb-6 h-[46px] w-full rounded-lg bg-purple-300 text-white lg:hover:bg-purple-200 lg:hover:shadow-purple">
-          Register
+        <button className="mb-6 h-[46px] w-full rounded-lg grid place-items-center bg-purple-300 text-white lg:hover:bg-purple-200 lg:hover:shadow-purple">
+          {isLoading ? <Loading /> : "Register"}
         </button>
 
         <span className="flex flex-col items-center text-grey-200 lg:flex-row">

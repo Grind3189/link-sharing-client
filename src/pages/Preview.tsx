@@ -1,19 +1,40 @@
-import { Link } from "react-router-dom";
+import MockupList from "../components/mockup/MockupList";
+import Popup from "../components/popup/Popup";
+import LinkIc from '../assets/icon-link-copied-to-clipboard.svg'
+import { Link, useNavigate } from "react-router-dom";
 import { LinkContext } from "../context/LinkContextProvider";
 import { ProfileContext } from "../context/ProfileContextProvider";
-import { useContext } from "react";
-import MockupList from "../components/mockup/MockupList";
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContextProvider";
+import { WidthContext } from "../context/WidthContextProvider";
 
 function Preview() {
+  const navigate = useNavigate();
+  const { isAuth } = useContext(AuthContext);
   const { linksData } = useContext(LinkContext);
   const { profileDetails } = useContext(ProfileContext);
-
-  const userId = localStorage.getItem('userId')
-  const shareableLink = `http://localhost:5173/preview/${userId}`
+  const { width } = useContext(WidthContext);
+  const userId = localStorage.getItem("userId");
+  const shareableLink = `http://localhost:5173/#/preview/${userId}`;
+  const [copied, setCopied] = useState<boolean>(false);
 
   const copyToLink = () => {
-    navigator.clipboard.writeText(shareableLink)
-  }
+    if (isAuth) {
+      navigator.clipboard.writeText(shareableLink);
+      handleSaved();
+    } else {
+      navigate("/login?redirectTo=/preview", {
+        state: { error: "You must login first" },
+      });
+    }
+  };
+
+  const handleSaved = async () => {
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 3000);
+  };
 
   return (
     <main className="px-6 py-4 md:p-6">
@@ -66,6 +87,14 @@ function Preview() {
           })}
         </div>
       </section>
+      {copied && (
+        <Popup>
+          <img src={LinkIc} alt="save icon" />
+          <span>{width > 800
+              ? "The link has been copied to your clipboard!"
+              : "Copied"}</span>
+        </Popup>
+      )}
     </main>
   );
 }

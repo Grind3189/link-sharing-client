@@ -2,10 +2,16 @@ import logoLg from "../assets/logo-devlinks-large.svg";
 import emailIc from "../assets/icon-email.svg";
 import passwordIc from "../assets/icon-password.svg";
 import InputContainer from "../components/form/InputContainer";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useState, useContext } from "react";
 import { getApiUrl } from "../util";
 import { AuthContext } from "../context/AuthContextProvider";
+import Loading from "../components/Loading";
 
 interface LoginDataState {
   email: string;
@@ -21,10 +27,12 @@ interface ErrorState {
 function Login() {
   const url = getApiUrl();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams()
-  const params = searchParams.get("redirectTo")
-  const {setIsAuth} = useContext(AuthContext)
-  
+  const location = useLocation().state;
+  const [searchParams] = useSearchParams();
+  const params = searchParams.get("redirectTo");
+  const { setIsAuth } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [loginData, setLoginData] = useState<LoginDataState>({
     email: "",
     password: "",
@@ -32,7 +40,7 @@ function Login() {
   const [error, setError] = useState<ErrorState>({
     email: "",
     password: "",
-    general: "",
+    general: location ? location.error : "",
   });
 
   const handleDismissError = () => {
@@ -53,7 +61,8 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsAuth(false)
+    setIsLoading(true)
+    setIsAuth(false);
     try {
       const res = await fetch(`${url}/api/login`, {
         method: "POST",
@@ -61,7 +70,7 @@ function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include"
+        credentials: "include",
       });
 
       if (!res.ok) {
@@ -73,13 +82,16 @@ function Login() {
         } else {
           throw new Error("Something went wrong try again later");
         }
+        setIsLoading(false)
         return;
       }
-      const {userId} = await res.json();
-      localStorage.setItem("userId", userId)
-      setIsAuth(true)
-      navigate(params ? params : "/", {replace: true});
+      const { userId } = await res.json();
+      setIsLoading(false)
+      localStorage.setItem("userId", userId);
+      setIsAuth(true);
+      navigate(params ? params : "/", { replace: true });
     } catch (err: any) {
+      setIsLoading(false)
       setError((prev) => ({ ...prev, general: err.message }));
     }
   };
@@ -136,14 +148,19 @@ function Login() {
           </InputContainer>
         </div>
 
-        {error.general && <h3 className="text-body_m text-red mb-3" >{error.general}</h3>}
-        <button className="mb-6 h-[46px] w-full rounded-lg bg-purple-300 text-white lg:hover:bg-purple-200 lg:hover:shadow-purple">
-          Login
+        {error.general && (
+          <h3 className="mb-3 text-body_m text-red">{error.general}</h3>
+        )}
+        <button className="mb-6 h-[46px] w-full grid place-items-center rounded-lg bg-purple-300 text-white lg:hover:bg-purple-200 lg:hover:shadow-purple">
+          {isLoading? <Loading /> : "Login"}
         </button>
 
         <span className="flex flex-col items-center text-grey-200 lg:flex-row">
           Don't have an account?
-          <Link to="/register" className="text-purple-300 lg:ml-1">
+          <Link
+            to={`/register${params && `${`?redirectTo=${params}`}`}`}
+            className="text-purple-300 lg:ml-1"
+          >
             Create account
           </Link>
         </span>

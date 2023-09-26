@@ -1,10 +1,16 @@
 import Mockup from "../components/mockup/Mockup";
 import ProfileForm from "../components/profile/ProfileForm";
+import Loading from "../components/Loading";
+import Popup from "../components/popup/Popup";
+import SaveIc from "../assets/icon-changes-saved.svg";
 import { ProfileContext } from "../context/ProfileContextProvider";
 import { useContext } from "react";
+import { WidthContext } from "../context/WidthContextProvider";
 
 function Profile() {
-  const {handleSaveProfile, hasChanges} = useContext(ProfileContext)
+  const { handleSaveProfile, isSaving, profileSaved } =
+    useContext(ProfileContext);
+  const { width } = useContext(WidthContext);
 
   return (
     <main className="relative h-full justify-between lg:flex lg:gap-6">
@@ -31,15 +37,26 @@ function Profile() {
            `}
       >
         <button
-          className={`h-[46px] w-full rounded-lg
+          className={`grid h-[46px] w-full place-items-center rounded-lg
          bg-purple-300 font-semibold text-white hover:bg-purple-200
-          disabled:cursor-not-allowed disabled:bg-purple-200 md:w-[91px]`}
+          disabled:cursor-not-allowed  md:w-[91px]`}
           onClick={handleSaveProfile}
-          disabled={!hasChanges}
+          disabled={isSaving}
         >
-          Save
+          {isSaving ? <Loading /> : "Save"}
         </button>
       </div>
+
+      {profileSaved && (
+        <Popup>
+          <img src={SaveIc} alt="save icon" />
+          <span>
+            {width > 800
+              ? "Your changes have been successfully saved!"
+              : "Saved"}
+          </span>
+        </Popup>
+      )}
     </main>
   );
 }

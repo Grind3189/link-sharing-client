@@ -18,8 +18,10 @@ interface LinkContextType {
   handleSave: () => void
   handleChangeLink: (e: React.ChangeEvent<HTMLInputElement>) => void
   linkLoading: boolean
-  apiError: string
+  isSaving: boolean
+  linkSaved: boolean
   setLinkLoading: React.Dispatch<React.SetStateAction<boolean>>
+  apiError: string
 }
 
 export const LinkContext = createContext({} as LinkContextType);
@@ -29,6 +31,8 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
   const {isAuth, isCheckingAuth} = useContext(AuthContext)
   const prevData = localStorage.getItem('links')
   const [linkLoading, setLinkLoading] = useState<boolean>(true)
+  const [isSaving, setIsSaving] = useState<boolean>(false)
+  const [linkSaved, setLinkSaved] = useState<boolean>(false)
   const parsedData: LinkType[] = prevData ? JSON.parse(prevData) : []
   const [linksData, setLinksData] = useState<LinkType[]>([]);
   const [apiError, setApiError] = useState<string>("")
@@ -104,6 +108,7 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
   }
 
   const handleSave = async () => {
+    setIsSaving(true)
     let hasError = false
     const updatedData = linksData.map(linkInfo => {
       if(!linkInfo.link) {
@@ -129,6 +134,7 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
     })
 
     if(hasError) {
+      setIsSaving(false)
       return setLinksData(updatedData)
     } 
 
@@ -143,10 +149,13 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
             credentials: "include"
           })
           if(!res.ok){
+            setIsSaving(false)
             throw new Error("Something went wrong")
           }
+          setIsSaving(false)
           const dataFromAPi = await res.json()
-          return setLinksData(dataFromAPi)
+          setLinksData(dataFromAPi)
+          return handleSaved()
         }
         catch(err: any) {
           setApiError(err.message)
@@ -154,8 +163,17 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
       } else {
         setLinksData(updatedData)
         localStorage.setItem('links', JSON.stringify(updatedData))
+        setIsSaving(false)
+        handleSaved()
       }
 
+  }
+
+  const handleSaved = async () => {
+    setLinkSaved(true)
+    setTimeout(() => {
+      setLinkSaved(false)
+    }, 3000)
   }
 
 
@@ -171,7 +189,9 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
         handleChangeLink,
         linkLoading,
         apiError,
-        setLinkLoading
+        setLinkLoading,
+        isSaving,
+        linkSaved
       }}
     >
       {children}
