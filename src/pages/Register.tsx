@@ -117,7 +117,7 @@ function Register() {
             <img src={emailIc} alt="email icon" />
             <input
               type="email"
-              placeholder="e.g. alex@email.com"
+              placeholder="e.g. grind@email.com"
               name="email"
               id="email"
               className="w-full bg-transparent outline-none"

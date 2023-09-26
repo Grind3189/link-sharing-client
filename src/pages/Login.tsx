@@ -116,7 +116,7 @@ function Login() {
             <img src={emailIc} alt="email icon" />
             <input
               type="email"
-              placeholder="e.g. alex@email.com"
+              placeholder="e.g. grind@email.com"
               name="email"
               id="email"
               className="w-full bg-transparent outline-none"
@@ -136,7 +136,7 @@ function Login() {
             <img src={passwordIc} alt="password icon" />
             <input
               type="password"
-              placeholder="Enter yourpassword"
+              placeholder="Enter your password"
               name="password"
               id="password"
               className="w-full bg-transparent outline-none"
