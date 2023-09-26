@@ -5,8 +5,6 @@ import Loading from "../Loading";
 const UploadImage = () => {
   const { handleUpload, profileDetails, isUploading } =
     useContext(ProfileContext);
-
-  console.log(profileDetails);
   return (
     <div className="flex rounded-xl bg-grey-100 p-5 text-grey-200 max-md:flex-col md:h-[233px] md:items-center">
       <span>Profile Picture</span>
