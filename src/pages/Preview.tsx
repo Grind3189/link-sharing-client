@@ -15,7 +15,7 @@ function Preview() {
   const { profileDetails } = useContext(ProfileContext);
   const { width } = useContext(WidthContext);
   const userId = localStorage.getItem("userId");
-  const shareableLink = `http://localhost:5173/#/preview/${userId}`;
+  const shareableLink = `https://yourdevlinks.netlify.app/#/preview/${userId}`;
   const [copied, setCopied] = useState<boolean>(false);
 
   const copyToLink = () => {

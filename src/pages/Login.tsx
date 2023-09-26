@@ -82,8 +82,7 @@ function Login() {
         } else {
           throw new Error("Something went wrong try again later");
         }
-        setIsLoading(false)
-        return;
+        return setIsLoading(false)
       }
       const { userId } = await res.json();
       setIsLoading(false)

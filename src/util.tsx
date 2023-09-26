@@ -15,7 +15,7 @@ import StackOverFlow from "./components/getIcons/StackOverFlow";
 import { Platform as PlatformType } from "./types/Types";
 
 export const getApiUrl = () => {
-  return "http://localhost:1930"
+  return "https://link-sharing-api.onrender.com"
 }
 
 export const getIcon = (
