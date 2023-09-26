@@ -28,7 +28,7 @@ const Mockup = () => {
             </>
           )}
           {profileDetails.email && (
-            <span className="relative top-[205px] w-[90%] bg-white text-center text-[14px] text-grey-200 ">
+            <span className="relative top-[180px] w-[90%] bg-white text-center text-[14px] text-grey-200 ">
               {profileDetails.email}
             </span>
           )}
