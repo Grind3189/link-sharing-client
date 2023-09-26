@@ -21,6 +21,7 @@ function Home() {
   const { isCheckingAuth } = useContext(AuthContext);
   const { width } = useContext(WidthContext);
 
+
   return (
     <main className="relative h-full justify-between lg:flex lg:gap-6">
       <Mockup />

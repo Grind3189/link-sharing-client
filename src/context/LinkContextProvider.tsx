@@ -39,10 +39,17 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
   
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`${uri}/api/links`, {credentials: "include"})
-      const data = await res.json()
-      setLinksData(data)
-      setLinkLoading(false)
+      try {
+        const res = await fetch(`${uri}/api/links`, {credentials: "include"})
+        setLinkLoading(false)
+        if(!res.ok) {
+          throw new Error("Something went wrong")
+        }
+        const data = await res.json()
+        setLinksData(data)
+      } catch(err) {
+        console.error(err)
+      }
     }
     if(isAuth) {
       setLinkLoading(true)
