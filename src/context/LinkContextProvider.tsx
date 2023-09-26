@@ -26,11 +26,11 @@ export const LinkContext = createContext({} as LinkContextType);
 
 const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
   const uri = getApiUrl()
-  const {isAuth} = useContext(AuthContext)
+  const {isAuth, isCheckingAuth} = useContext(AuthContext)
   const prevData = localStorage.getItem('links')
   const [linkLoading, setLinkLoading] = useState<boolean>(true)
   const parsedData: LinkType[] = prevData ? JSON.parse(prevData) : []
-  const [linksData, setLinksData] = useState<LinkType[]>(linkLoading ? [] : parsedData);
+  const [linksData, setLinksData] = useState<LinkType[]>([]);
   const [apiError, setApiError] = useState<string>("")
   
   useEffect(() => {
@@ -43,11 +43,12 @@ const LinkContextProvider = ({ children }: LinkContextProviderProp) => {
     if(isAuth) {
       setLinkLoading(true)
       fetchData()
-    } else {
+    } else if (!isAuth && !isCheckingAuth) {
       setLinkLoading(false)
       setLinksData(parsedData)
     }
-  }, [isAuth])
+  }, [isAuth, isCheckingAuth])
+
 
   const handleRemoveLink = (id: string) => {
     const filteredData = linksData.filter((links) => links.id !== id);

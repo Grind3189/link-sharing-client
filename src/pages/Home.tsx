@@ -10,6 +10,7 @@ function Home() {
     useContext(LinkContext);
   const { isCheckingAuth } = useContext(AuthContext);
 
+
   return (
     <main className="relative h-full justify-between lg:flex lg:gap-6">
       <Mockup />

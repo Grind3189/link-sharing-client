@@ -25,7 +25,7 @@ interface ProfileContextProviderProp {
 
 const ProfileContextProvider = ({ children }: ProfileContextProviderProp) => {
   const uri = getApiUrl()
-  const {isAuth} = useContext(AuthContext)
+  const {isAuth, isCheckingAuth} = useContext(AuthContext)
   const [loadingProfile, setLoadingProfile ] = useState<boolean>(true)
   const prevData = localStorage.getItem("profile");
   const parsedData = prevData && !loadingProfile
@@ -40,9 +40,9 @@ const ProfileContextProvider = ({ children }: ProfileContextProviderProp) => {
           signature: "",
         },
       };
-  const [profileDetails, setProfileDetails] = useState<ProfileType>(parsedData);
 
-  
+  const [profileDetails, setProfileDetails] = useState<ProfileType>({...parsedData});
+
   const [isUploading, setIsUploading] = useState<boolean>(false)
 
   const [emptyError, setEmptyError] = useState<EmptyErrorState>({
@@ -64,11 +64,9 @@ const ProfileContextProvider = ({ children }: ProfileContextProviderProp) => {
       fetchData()
     } else {
       setLoadingProfile(false)
-      setProfileDetails(parsedData)
+      setProfileDetails({...parsedData})
     }
-  }, [isAuth])
-
-
+  }, [isAuth, isCheckingAuth])
 
   const handleChangeProfile = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfileDetails((prev) => ({
