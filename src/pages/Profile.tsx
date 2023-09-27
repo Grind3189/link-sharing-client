@@ -6,11 +6,13 @@ import SaveIc from "../assets/icon-changes-saved.svg";
 import { ProfileContext } from "../context/ProfileContextProvider";
 import { useContext } from "react";
 import { WidthContext } from "../context/WidthContextProvider";
+import { AuthContext } from "../context/AuthContextProvider";
 
 function Profile() {
   const { handleSaveProfile, isSaving, profileSaved } =
     useContext(ProfileContext);
   const { width } = useContext(WidthContext);
+  const { isCheckingAuth } = useContext(AuthContext);
 
   return (
     <main className="relative h-full justify-between lg:flex lg:gap-6">
@@ -20,18 +22,22 @@ function Profile() {
         className={`h-[100%]
         overflow-scroll rounded-lg bg-white lg:w-[60%] lg:rounded-xl`}
       >
-        <div className="p-6">
-          <h1 className="text-[24px] font-bold text-grey-300 md:text-heading_m">
-            Profile Details
-          </h1>
-          <p className="mb-10 text-body_m text-grey-200">
-            Add your details to create a personal touch to your profile.
-          </p>
+        {!isCheckingAuth ? (
+          <div className="p-6">
+            <h1 className="text-[24px] font-bold text-grey-300 md:text-heading_m">
+              Profile Details
+            </h1>
+            <p className="mb-10 text-body_m text-grey-200">
+              Add your details to create a personal touch to your profile.
+            </p>
 
-          <ProfileForm />
-        </div>
+            <ProfileForm />
+          </div>
+        ) : (
+          <h1 className="ml-5 mt-5 text-2xl font-bold">Loading...</h1>
+        )}
       </section>
-      <div
+      {!isCheckingAuth && <div
         className={`absolute bottom-0 h-[94px] w-full border-t border-borders
            bg-white p-6 md:flex md:justify-end lg:right-0 lg:max-w-[calc(60%-15px)]
            `}
@@ -45,7 +51,7 @@ function Profile() {
         >
           {isSaving ? <Loading /> : "Save"}
         </button>
-      </div>
+      </div>}
 
       {profileSaved && (
         <Popup>

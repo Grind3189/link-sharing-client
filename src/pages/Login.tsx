@@ -30,7 +30,7 @@ function Login() {
   const location = useLocation().state;
   const [searchParams] = useSearchParams();
   const params = searchParams.get("redirectTo");
-  const { setIsAuth } = useContext(AuthContext);
+  const { setIsAuth, isCheckingAuth } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [loginData, setLoginData] = useState<LoginDataState>({
@@ -61,7 +61,7 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     setIsAuth(false);
     try {
       const res = await fetch(`${url}/api/login`, {
@@ -82,87 +82,89 @@ function Login() {
         } else {
           throw new Error("Something went wrong try again later");
         }
-        return setIsLoading(false)
+        return setIsLoading(false);
       }
       const { userId } = await res.json();
-      setIsLoading(false)
+      setIsLoading(false);
       localStorage.setItem("userId", userId);
       setIsAuth(true);
       navigate(params ? params : "/", { replace: true });
     } catch (err: any) {
-      setIsLoading(false)
+      setIsLoading(false);
       setError((prev) => ({ ...prev, general: err.message }));
     }
   };
 
   return (
     <main className="flex h-screen flex-col items-center justify-start p-8 md:justify-center">
-      <img src={logoLg} className="mb-4 self-start md:self-center" />
+      <img src={logoLg} className="mb-[71px] self-start md:self-center" />
       <form
-        className="w-full rounded-lg p-10 md:w-form md:bg-white"
+        className="w-full rounded-lg md:p-10 md:w-form md:min-h-[482px] md:bg-white"
         onSubmit={handleSubmit}
       >
-        <h1 className="text-[24px] font-bold">Login</h1>
-        <p className="mb-10 text-grey-200">
-          Add your details below to get back into the app
-        </p>
+       {!isCheckingAuth ? <>
+          <h1 className="text-[24px] font-bold">Login</h1>
+          <p className="mb-10 text-grey-200">
+            Add your details below to get back into the app
+          </p>
 
-        <div className="mb-6">
-          <div className="flex items-center justify-between">
-            <label htmlFor="email">Email Address</label>
-            <span className="text-body_s text-red">{error.email}</span>
+          <div className="mb-6">
+            <div className="flex items-center justify-between">
+              <label htmlFor="email">Email Address</label>
+              <span className="text-body_s text-red">{error.email}</span>
+            </div>
+            <InputContainer hasError={error.email ? true : false}>
+              <img src={emailIc} alt="email icon" />
+              <input
+                type="email"
+                placeholder="e.g. grind@email.com"
+                name="email"
+                id="email"
+                className="w-full bg-transparent outline-none"
+                onChange={handleChangeData}
+                value={loginData.email}
+                required
+              />
+            </InputContainer>
           </div>
-          <InputContainer hasError={error.email ? true : false}>
-            <img src={emailIc} alt="email icon" />
-            <input
-              type="email"
-              placeholder="e.g. grind@email.com"
-              name="email"
-              id="email"
-              className="w-full bg-transparent outline-none"
-              onChange={handleChangeData}
-              value={loginData.email}
-              required
-            />
-          </InputContainer>
-        </div>
 
-        <div className="mb-6">
-          <div className="flex items-center justify-between">
-            <label htmlFor="password">Password</label>
-            <span className="text-body_s text-red">{error.password}</span>
+          <div className="mb-6">
+            <div className="flex items-center justify-between">
+              <label htmlFor="password">Password</label>
+              <span className="text-body_s text-red">{error.password}</span>
+            </div>
+            <InputContainer hasError={error.password ? true : false}>
+              <img src={passwordIc} alt="password icon" />
+              <input
+                type="password"
+                placeholder="Enter your password"
+                name="password"
+                id="password"
+                className="w-full bg-transparent outline-none"
+                onChange={handleChangeData}
+                value={loginData.password}
+                required
+              />
+            </InputContainer>
           </div>
-          <InputContainer hasError={error.password ? true : false}>
-            <img src={passwordIc} alt="password icon" />
-            <input
-              type="password"
-              placeholder="Enter your password"
-              name="password"
-              id="password"
-              className="w-full bg-transparent outline-none"
-              onChange={handleChangeData}
-              value={loginData.password}
-              required
-            />
-          </InputContainer>
-        </div>
 
-        {error.general && (
-          <h3 className="mb-3 text-body_m text-red">{error.general}</h3>
-        )}
-        <button className="mb-6 h-[46px] w-full grid place-items-center rounded-lg bg-purple-300 text-white lg:hover:bg-purple-200 lg:hover:shadow-purple">
-          {isLoading? <Loading /> : "Login"}
-        </button>
+          {error.general && (
+            <h3 className="mb-3 text-body_m text-red">{error.general}</h3>
+          )}
+          <button className="mb-6 grid h-[46px] w-full place-items-center rounded-lg bg-purple-300 text-white lg:hover:bg-purple-200 lg:hover:shadow-purple">
+            {isLoading ? <Loading /> : "Login"}
+          </button>
 
-        <span className="flex flex-col items-center text-grey-200 lg:flex-row">
-          Don't have an account?
-          <Link
-            to={`/register${params && `${`?redirectTo=${params}`}`}`}
-            className="text-purple-300 lg:ml-1"
-          >
-            Create account
-          </Link>
-        </span>
+          <span className="flex flex-col items-center text-grey-200 lg:flex-row">
+            Don't have an account?
+            <Link
+              to={params ? `/register?redirectTo=${params}` : '/register'}
+              className="text-purple-300 lg:ml-1"
+            >
+              Create account
+            </Link>
+          </span>
+        </> : <h1 className="font-bold text-2xl">Loading...</h1>}
       </form>
     </main>
   );

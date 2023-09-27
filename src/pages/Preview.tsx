@@ -1,6 +1,6 @@
 import MockupList from "../components/mockup/MockupList";
 import Popup from "../components/popup/Popup";
-import LinkIc from '../assets/icon-link-copied-to-clipboard.svg'
+import LinkIc from "../assets/icon-link-copied-to-clipboard.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { LinkContext } from "../context/LinkContextProvider";
 import { ProfileContext } from "../context/ProfileContextProvider";
@@ -10,7 +10,7 @@ import { WidthContext } from "../context/WidthContextProvider";
 
 function Preview() {
   const navigate = useNavigate();
-  const { isAuth } = useContext(AuthContext);
+  const { isAuth, isCheckingAuth } = useContext(AuthContext);
   const { linksData } = useContext(LinkContext);
   const { profileDetails } = useContext(ProfileContext);
   const { width } = useContext(WidthContext);
@@ -54,45 +54,55 @@ function Preview() {
         </button>
       </nav>
 
-      <section className="mx-auto flex flex-col items-center md:min-h-[300px] md:w-[349px] md:rounded-3xl md:bg-white md:py-12 md:shadow-grey">
-        <div className="mb-[25px]">
-          {profileDetails.image.url ? (
-            <img
-              src={profileDetails.image.url}
-              alt="profile picture"
-              className="h-[104px] w-[104px] rounded-[50%] border-4 border-purple-300"
-            />
-          ) : (
-            <div className="h-[104px] w-[104px] rounded-[50%] bg-[#EEEEEE]" />
-          )}
-        </div>
+      <section className={`mx-auto flex flex-col ${isCheckingAuth ? "items-start md:items-center" : "items-center"} md:min-h-[300px] md:w-[349px] md:rounded-3xl md:bg-white md:py-12 md:shadow-grey`}>
+        {!isCheckingAuth ? (
+          <>
+            <div className="mb-[25px]">
+              {profileDetails.image.url ? (
+                <img
+                  src={profileDetails.image.url}
+                  alt="profile picture"
+                  className="h-[104px] w-[104px] rounded-[50%] border-4 border-purple-300"
+                />
+              ) : (
+                <div className="h-[104px] w-[104px] rounded-[50%] bg-[#EEEEEE]" />
+              )}
+            </div>
 
-        {profileDetails.name ? (
-          <h1 className="mb-2 text-heading_m font-bold text-grey-300">
-            {profileDetails.name} {profileDetails.lastname}
-          </h1>
+            {profileDetails.name ? (
+              <h1 className="mb-2 text-heading_m font-bold text-grey-300">
+                {profileDetails.name} {profileDetails.lastname}
+              </h1>
+            ) : (
+              <div className="mb-2 h-[45px] w-[50%] rounded-full bg-[#EEEEEE]" />
+            )}
+
+            {profileDetails.email ? (
+              <span className="mb-14 text-grey-200">
+                {profileDetails.email}
+              </span>
+            ) : (
+              <div className="mb-14 h-5 w-[35%] rounded-full bg-[#EEEEEE]" />
+            )}
+
+            <div>
+              {linksData.map((linkInfo, index) => {
+                return <MockupList linkInfo={linkInfo} key={index} />;
+              })}
+            </div>
+          </>
         ) : (
-          <div className="mb-2 h-[45px] w-[50%] rounded-full bg-[#EEEEEE]" />
+          <h1 className="text-2xl font-bold md:my-auto md:mx-auto">Loading...</h1>
         )}
-
-        {profileDetails.email ? (
-          <span className="mb-14 text-grey-200">{profileDetails.email}</span>
-        ) : (
-          <div className="mb-14 h-5 w-[35%] rounded-full bg-[#EEEEEE]" />
-        )}
-
-        <div>
-          {linksData.map((linkInfo, index) => {
-            return <MockupList linkInfo={linkInfo} key={index} />;
-          })}
-        </div>
       </section>
       {copied && (
         <Popup>
           <img src={LinkIc} alt="save icon" />
-          <span>{width > 800
+          <span>
+            {width > 800
               ? "The link has been copied to your clipboard!"
-              : "Copied"}</span>
+              : "Copied"}
+          </span>
         </Popup>
       )}
     </main>
