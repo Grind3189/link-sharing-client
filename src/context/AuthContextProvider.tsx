@@ -31,8 +31,6 @@ const AuthContextProvider = ({ children }: AuthContextProviderProp) => {
     fetchData();
   }, []);
 
-  console.log(isCheckingAuth)
-
   return (
     <AuthContext.Provider value={{ isAuth, setIsAuth, isCheckingAuth }}>
       {children}
